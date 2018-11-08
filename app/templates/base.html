@@ -1,0 +1,66 @@
+{% extends 'bootstrap/base.html' %}
+{% block title %}武汉开发区一中办公系统{% endblock %}
+{% block navbar %}
+    <div class="page-header" align="center"><h3>武汉开发区一中办公系统</h3></div>
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">SCHOA</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">通知 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">值班 </a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">其它内容 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">会议纪要</a></li>
+                                <li><a href="#">成绩查询</a></li>
+                                <li><a href="#">维修上报</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">文件资料</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="输入搜索内容">
+                        </div>
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('auth.logout') }}">退出</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('auth.login') }}">登录</a></li>
+                            <li><a href="{{ url_for('auth.register') }}">注册</a></li>
+                        {% endif %}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% block page_content %}{% endblock %}
+    </div>
+{% endblock %}

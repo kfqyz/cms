@@ -1,0 +1,13 @@
+亲爱的 {{ user.username }},
+
+    欢迎来到学校办公系统（SCHOA)!
+
+    请点击下面的链接以验证你的账号：
+
+    {{ url_for('auth.confirm', token=token, _external=True) }}
+
+此致！
+
+    SCHOA Power by 在水一方@2018
+
+    注意：可以不用回复此邮件

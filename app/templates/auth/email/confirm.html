@@ -1,0 +1,13 @@
+<p>亲爱的 {{ user.username }},</p>
+
+<p>    欢迎来到学校办公系统（SCHOA)!</p>
+
+<p>    请点击下面的链接以验证你的账号：</p>
+
+<p>    {{ url_for('auth.confirm', token=token, _external=True) }}</p>
+
+<p>此致！</p>
+
+<p>    SCHOA Power by 在水一方@2018</p>
+
+<p>    注意：可以不用回复此邮件</p>
