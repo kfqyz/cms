@@ -1,1 +1,2 @@
-# cms
+# schoa
+School office automation system
