@@ -1,2 +1,2 @@
 # schoa
-School office automation system
+School office automation system.
