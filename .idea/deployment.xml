@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" persistUploadOnCheckin="false">
+  <component name="PublishConfigData" uploadOnCheckin="35e4834c-9ffe-471b-96b1-52ecc3457c4a">
     <serverData>
       <paths name="240">
         <serverdata>
@@ -10,5 +10,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myUploadOnCheckinName" value="240" />
   </component>
 </project>
