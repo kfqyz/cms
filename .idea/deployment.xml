@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="240" persistUploadOnCheckin="false">
+  <component name="PublishConfigData" persistUploadOnCheckin="false">
     <serverData>
       <paths name="240">
         <serverdata>
           <mappings>
             <mapping deploy="/home/kfqyz/schoa" local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/venv" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

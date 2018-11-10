@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="35e4834c-9ffe-471b-96b1-52ecc3457c4a" name="240" url="http://172.16.5.240">
-        <fileTransfer host="172.16.5.240" port="22" accessType="SFTP">
+      <webServer id="35e4834c-9ffe-471b-96b1-52ecc3457c4a" name="240" url="http://www.kfqyz.cn:5000">
+        <fileTransfer host="www.kfqyz.cn" port="22" rootFolder="/home/kfqyz" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
           </advancedOptions>
