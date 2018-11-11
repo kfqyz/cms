@@ -22,7 +22,7 @@ class UserModelTestCase(unittest.TestCase):
         self.assertTrue(u1.password_hash != u2.password_hash)
 
     def test_user_role(self):
-        u = User(emial='sh48@qq.com',password='ASDF')
+        u = User(email='kfqyz@163.com',password='asdf')
         self.assertTrue(u.can(Permission.FOLLOW))
         self.assertTrue(u.can(Permission.COMMENT))
         self.assertTrue(u.can(Permission.WRITE))

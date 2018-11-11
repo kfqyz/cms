@@ -11,7 +11,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SCHOA_MAIL_SUBJECT_PREFIX = '[SCHOA]'
-    SCHOA_MAIL_SENDER = 'SCHOA Admin <kfqyz@163.com>'
+    SCHOA_MAIL_SENDER = 'SCHOA Admin'
     SCHOA_ADMIN = os.environ.get('SCHOA_ADMIN')
     SSL_REDIRECT = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
