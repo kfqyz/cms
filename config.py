@@ -8,7 +8,7 @@ class Config:
     MAIL_PORT = 994
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'kfqyz@163.com'
-    MAIL_PASSWORD = 'asdf1974'
+    MAIL_PASSWORD = ''
     SCHOA_MAIL_SUBJECT_PREFIX = '[SCHOA]'
     SCHOA_MAIL_SENDER = 'SCHOA Admin <kfqyz@163.com>'
     SCHOA_ADMIN = 'kfqyz@163.com'
