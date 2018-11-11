@@ -16,7 +16,11 @@ def index():
                            known=session.get('known', False), current_time=datetime.utcnow())
 
 
+from ..decorators import admin_required, permission_required
+
+
 @main.route('/secret')
 @login_required
+@admin_required
 def secret():
     return '登录才能看到啊！'
