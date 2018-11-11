@@ -35,7 +35,7 @@ class Role(UserMixin, db.Model):
             'User': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
             'Moderator': [Permission.FOLLOW, Permission.COMMENT,
                           Permission.WRITE, Permission.MODERATE],
-            'Adminstrator': [Permission.FOLLOW, Permission.COMMENT,
+            'Administrator': [Permission.FOLLOW, Permission.COMMENT,
                              Permission.WRITE, Permission.MODERATE,
                              Permission.ADMIN],
         }

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ super() }}-- 验证账号{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h3>{{ current_user.username }}：</h3>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp; 你好！</p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp; 你还没有验证你的账号，访问本站须要验证你的账号。请检查你的邮箱是否收到验证邮件。
+        </p>
+        <p>
+            <b><a href="{{ url_for('auth.resend_confirmation') }}">点击此处</a></b>再次发送验证邮件。
+        </p>
+    </div>
+{% endblock %}
