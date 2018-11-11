@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-Hello,
+
+{% block title %}{{ super() }} -- 首页{% endblock %}
+{% block page_content %}
+<h2>Hello,
 {% if current_user.is_authenticated %}
-{{ current_user.username }}
+{{ current_user.username }}</h2>
 {% else %}
-Stranger
+<h3>你好，欢迎访问本站！</h3>
 {% endif %}
+{% endblock %}
