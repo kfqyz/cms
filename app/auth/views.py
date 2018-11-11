@@ -69,4 +69,3 @@ def confirm(token):
     else:
         flash('验证账号无效或已经过期！')
     return redirect(url_for('main.index'))
-
