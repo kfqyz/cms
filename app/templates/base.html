@@ -41,6 +41,7 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('main.user',username=current_user.username) }}">{{ current_user.usernmae }}</a></li>
                             <li><a href="{{ url_for('auth.logout') }}">退出</a></li>
                         {% else %}
                             <li><a href="{{ url_for('auth.login') }}">登录</a></li>
@@ -63,4 +64,10 @@
         {% endfor %}
         {% block page_content %}{% endblock %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.locale('zh-cn') }}
 {% endblock %}
