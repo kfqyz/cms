@@ -4,21 +4,23 @@
 {% block page_content %}
     <div class="page-header">
         <h3>{{ user.username }}</h3>
-        {% if user.name or user.location %}
+        {% if user == current_user %}
+            {% if user.name %}<p>姓名：{{ user.name }}</p>{% endif %}
+            {% if user.phone_number %}<p>手机号姓名：{{ user.phone_number }}</p>{% endif %}
+        {% endif %}
+        {% if user.location %}
             <p>
-                {% if user.name %}{{ user.name }}{% endif %}
-                {% if user.location %}
-                    来自<a href="http://maps.baidu.com/?q={{ user.location }}">{{ user.location }}</a>
-                {% endif %}
+                位置：<a href="http://maps.baidu.com/?q={{ user.location }}">{{ user.location }}</a>
             </p>
         {% endif %}
-        {% if current_user.is_administrator() %}
-            <p>{{ user.email }}</p>
-        {% endif %}
-        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-        <p>
-            注册时间：{{ moment(user.member_since).format('L') }}
-            最后访问时间：{{ moment(user.last_seen).fromNow() }}
-        </p>
+        {% if user.email %}<p>邮箱：{{ user.email }}</p>{% endif %}
+        {% if user.about_me %}<p>简介：{{ user.about_me }}</p>{% endif %}
+        <p>注册时间：{{ moment(user.member_since).format('L') }}</p>
+        <p>访问时间：{{ moment(user.last_seen).fromNow() }}</p>
     </div>
+    {% if user == current_user %}
+        <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
+            编辑资料
+        </a>
+    {% endif %}
 {% endblock %}

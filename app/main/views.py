@@ -1,25 +1,40 @@
 from datetime import datetime
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, redirect, url_for, flash
 from . import main
-from .forms import NameForm
-from ..models import User
-from flask_login import login_required
+from .forms import EditProfileForm
+from ..models import User, db
+from flask_login import login_required, current_user
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = NameForm()
-    if form.validate_on_submit():
-        return redirect(url_for('.index'))
-    return render_template('index.html', form=form, name=session.get('name'), \
-                           known=session.get('known', False), current_time=datetime.utcnow())
+    return render_template('index.html')
 
 
 @main.route('/user/<username>')
 def user(username):
-    user= User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html',user=user)
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user=user)
 
+
+@main.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.phone_number = form.phone_number.data
+        current_user.location = form.location.data
+        current_user.about_me = form.about_me.data
+        db.session.add(current_user._get_current_object())
+        db.session.commit()
+        flash('你已经成功更新个人资料。')
+        return redirect(url_for('.user', username=current_user.username))
+    form.name.data = current_user.name
+    form.phone_number.data = current_user.phone_number
+    form.location.data = current_user.location
+    form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html',form=form)
 
 from ..decorators import admin_required, permission_required
 
@@ -28,4 +43,4 @@ from ..decorators import admin_required, permission_required
 @login_required
 @admin_required
 def secret():
-    return '登录才能看到啊！'
+    return '管理员登录才能看到啊！'

@@ -36,8 +36,8 @@ class Role(UserMixin, db.Model):
             'Moderator': [Permission.FOLLOW, Permission.COMMENT,
                           Permission.WRITE, Permission.MODERATE],
             'Administrator': [Permission.FOLLOW, Permission.COMMENT,
-                             Permission.WRITE, Permission.MODERATE,
-                             Permission.ADMIN],
+                              Permission.WRITE, Permission.MODERATE,
+                              Permission.ADMIN],
         }
         default_role = 'User'
         for r in roles:
@@ -72,8 +72,9 @@ class Role(UserMixin, db.Model):
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(64), unique=True, index=True)
+    phone_number = db.Column(db.Integer, unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     confirmed = db.Column(db.Boolean, default=False)
