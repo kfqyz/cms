@@ -8,7 +8,6 @@ from ..email import send_email
 from ..models import User
 
 
-
 @auth.before_app_request
 def before_request():
     if current_user.is_authenticated:
