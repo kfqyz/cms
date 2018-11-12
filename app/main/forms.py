@@ -13,10 +13,9 @@ class EditProfileForm(FlaskForm):
 
 
 class EditProfileAdminForm(FlaskForm):
-    email = StringField('邮箱', validators=[DataRequired(), Length(1, 64), Email])
-    username = StringField('用户名', validators=[DataRequired(), Length(0, 64), \
-                                              Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, \
-                                                     '用户名必须只能由字母、数字、下划线、点组成')])
+    email = StringField('邮箱', validators=[DataRequired(), Length(1, 64), Email()])
+    username = StringField('用户名', validators=[DataRequired(), Length(0, 64),
+                                              Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, '用户名必须只能由字母、数字、下划线、点组成')])
     confirmed = BooleanField('验证')
     role = SelectField('角色', coerce=int)
     name = StringField('姓名', validators=[Length(0, 64)])

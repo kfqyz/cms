@@ -2,7 +2,7 @@ from ..decorators import admin_required
 from flask import render_template, redirect, url_for, flash
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm
-from ..models import User, db
+from ..models import db, User, Role
 from flask_login import login_required, current_user
 
 
@@ -34,7 +34,7 @@ def edit_profile():
     form.phone_number.data = current_user.phone_number
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html',form=form)
+    return render_template('edit_profile.html', form=form)
 
 
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
@@ -46,9 +46,8 @@ def edit_profile_admin(id):
     if form.validate_on_submit():
         user.email = form.email.data
         user.username = form.username.data
-        user.phone_number = form.phone_number.data
         user.confirmed = form.confirmed.data
-        user.role = form.role.data
+        user.role = Role.query.get(form.role.data)
         user.name = form.name.data
         user.phone_number = form.phone_number.data
         user.location = form.location.data
@@ -59,12 +58,10 @@ def edit_profile_admin(id):
         return redirect(url_for('.user', username=user.username))
     form.email.data = user.email
     form.username.data = user.username
-    form.phone_number.data = user.phone_number
     form.confirmed.data = user.confirmed
-    form.role.data = user.role
+    form.role.data = user.role_id
     form.name.data = user.name
     form.phone_number.data = user.phone_number
     form.location.data = user.location
     form.about_me.data = user.about_me
-    return render_template('edit_profile.html',form=form,user=user)
-
+    return render_template('edit_profile.html', form=form, user=user)
