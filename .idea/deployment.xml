@@ -7,6 +7,9 @@
           <mappings>
             <mapping deploy="/home/kfqyz/schoa" local="$PROJECT_DIR$" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/venv" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
