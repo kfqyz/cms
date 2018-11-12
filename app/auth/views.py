@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user
 
+
 from . import auth
 from .forms import LoginForm, RegistrationForm
 from .. import db
