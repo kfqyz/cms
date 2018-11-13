@@ -41,3 +41,8 @@ class EditProfileAdminForm(FlaskForm):
     def validate_phone_number(self, field):
         if field.data != self.user.phone_number and User.query.filter_by(phone_number=field.data).first():
             raise ValidationError('该手机号已经注册了。')
+
+
+class PostForm(FlaskForm):
+    body = TextAreaField('今天写点什么吧',validators=[DataRequired()])
+    submit = SubmitField('发表')
