@@ -14,20 +14,23 @@
                 <div class="post-body">
                     {{ post.body }}
                 </div>
-{#                <div class="post-footer">#}
-{#                    {% if currnet_user == post.author %}#}
-{#                        <a href="{{ url_for('.edit',id=post.id) }}">#}
-{#                            <span class="label label-primary">修改</span>#}
-{#                        </a>#}
-{#                    {% elif current_user.is_administrator() %}#}
-{#                        <a href="{{ url_for('.edit',id=post.id) }}">#}
-{#                            <span class="label label-danger">管理员修改</span>#}
-{#                        </a>#}
-{#                    {% endif %}#}
+                <div class="post-footer">
+                    <a href="{{ url_for('.post',id=post.id) }}">
+                        <span class="label label-default">查看文章</span>
+                    </a>
+                    {% if current_user == post.author %}
+                        <a href="{{ url_for('.edit',id=post.id) }}">
+                            <span class="label label-primary">修改</span>
+                        </a>
+                    {% elif current_user.is_administrator() %}
+                        <a href="{{ url_for('.edit',id=post.id) }}">
+                            <span class="label label-danger">管理员修改</span>
+                        </a>
+                    {% endif %}
 {#                    <a href="{{ url_for('.post', id = post.id) }}">#}
 {#                        <span class="label label-primary">评论数：{{ post.comments.count() }}</span>#}
 {#                    </a>#}
-{#                </div>#}
+                </div>
             </div>
         </li>
     {% endfor %}
