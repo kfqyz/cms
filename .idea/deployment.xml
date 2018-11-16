@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" uploadOnCheckin="35e4834c-9ffe-471b-96b1-52ecc3457c4a">
+  <component name="PublishConfigData" autoUpload="Always" serverName="240" uploadOnCheckin="35e4834c-9ffe-471b-96b1-52ecc3457c4a">
     <serverData>
       <paths name="240">
         <serverdata>
           <mappings>
-            <mapping deploy="/schoa" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/kfqyz/schoa" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/venv" />
@@ -14,5 +14,6 @@
       </paths>
     </serverData>
     <option name="myUploadOnCheckinName" value="240" />
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

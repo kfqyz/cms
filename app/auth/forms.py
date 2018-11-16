@@ -2,12 +2,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms import ValidationError
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
-
 from ..models import User
 
 
 class LoginForm(FlaskForm):
-    account = StringField('用户名/邮箱/手机号', validators=[DataRequired(), Length(1, 64)], render_kw={'placeholder': '用户名/邮箱/手机号'})
+    account = StringField('用户名/邮箱/手机号', validators=[DataRequired(), Length(1, 64)],
+                          render_kw={'placeholder': '用户名/邮箱/手机号'})
     password = PasswordField('密  码', validators=[DataRequired()], render_kw={'placeholder': '请输入密码'})
     remember_me = BooleanField('下次自动登录')
     submit = SubmitField('登  录')
@@ -20,7 +20,8 @@ class RegistrationForm(FlaskForm):
                                                      '用户名只能由字母、数字、点或下划线组成！')], render_kw={'placeholder': '请输入用户名'})
     password = PasswordField('密  码', validators=[DataRequired()], render_kw={'placeholder': '请输入密码'})
     password2 = PasswordField('重复密码', validators=[DataRequired(), \
-                                                  EqualTo('password', message='重复密码不一致')], render_kw={'placeholder': '请再次输入密码'})
+                                                  EqualTo('password', message='重复密码不一致')],
+                              render_kw={'placeholder': '请再次输入密码'})
     submit = SubmitField('注  册')
 
     def validate_email(self, field):
