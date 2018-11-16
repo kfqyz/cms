@@ -44,5 +44,5 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = TextAreaField('今天写点什么吧',validators=[DataRequired()])
-    submit = SubmitField('发表')
+    body = TextAreaField('今天写点什么吧', validators=[DataRequired()], render_kw={'rows': 10})
+    submit = SubmitField('提交')
