@@ -5,7 +5,7 @@
       <paths name="240">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/kfqyz/schoa" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/schoa" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/venv" />
