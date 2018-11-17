@@ -1,4 +1,4 @@
-#!C:\Users\Administrator\PycharmProjects\schoa\venv\Scripts\python.exe
+#!C:\Users\Administrator\PycharmProjects\cms\venv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==18.1','console_scripts','pip3.7'
 __requires__ = 'pip==18.1'
 import re
