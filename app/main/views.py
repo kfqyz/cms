@@ -11,7 +11,7 @@ from ..models import db, User, Role, Post, Permission, Comment
 def index():
     form = PostForm()
     if current_user.can(Permission.WRITE) and form.validate_on_submit():
-        post = Post(body=form.body.data,
+        post = Post(title=form.title.data, body=form.body.data,
                     author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
@@ -121,11 +121,13 @@ def edit(id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
+        post.title = form.title.data
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
+    form.title.data = post.title
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
 
