@@ -9,16 +9,16 @@ class Config:
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in ['true', 'on', '1']
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    SCHOA_MAIL_SUBJECT_PREFIX = '[SCHOA]'
-    SCHOA_MAIL_SENDER = 'SCHOA Admin'
-    SCHOA_ADMIN = os.environ.get('SCHOA_ADMIN')
+    CMS_MAIL_SUBJECT_PREFIX = '[CMS]'
+    CMS_MAIL_SENDER = 'CMS Admin'
+    CMS_ADMIN = os.environ.get('CMS_ADMIN')
     SSL_REDIRECT = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
-    SCHOA_POSTS_PER_PAGE = 10
-    SCHOA_FOLLOWERS_PER_PAGE = 20
-    SCHOA_COMMENTS_PER_PAGE = 15
-    SCHOA_SLOW_DB_QUERY_TIME = 0.5
+    CMS_POSTS_PER_PAGE = 10
+    CMS_FOLLOWERS_PER_PAGE = 20
+    CMS_COMMENTS_PER_PAGE = 15
+    CMS_SLOW_DB_QUERY_TIME = 0.5
 
     @staticmethod
     def init_app(app):
