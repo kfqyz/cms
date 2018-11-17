@@ -16,20 +16,20 @@
                 </div>
                 <div class="post-footer">
                     <a href="{{ url_for('.post',id=post.id) }}">
-                        <span class="label label-default">查看文章</span>
+                        <button type="button" class="btn btn-xs btn-default">查看文章</button>
                     </a>
                     {% if current_user == post.author %}
                         <a href="{{ url_for('.edit',id=post.id) }}">
-                            <span class="label label-primary">修改</span>
+                            <button type="button" class="btn btn-xs btn-default">修改</button>
                         </a>
                     {% elif current_user.is_administrator() %}
                         <a href="{{ url_for('.edit',id=post.id) }}">
-                            <span class="label label-danger">管理员修改</span>
+                            <button type="button" class="btn btn-xs btn-danger">管理员修改</button>
                         </a>
                     {% endif %}
-{#                    <a href="{{ url_for('.post', id = post.id) }}">#}
-{#                        <span class="label label-primary">评论数：{{ post.comments.count() }}</span>#}
-{#                    </a>#}
+                    <a href="{{ url_for('.post', id = post.id) }}#comments">
+                        <button type="button" class="btn btn-xs btn-default">评论数：{{ post.comments.count() }}</button>
+                    </a>
                 </div>
             </div>
         </li>
