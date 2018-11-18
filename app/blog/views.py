@@ -41,7 +41,7 @@ def user(username):
                                                                          'CMS_POSTS_PER_PAGE'],
                                                                      error_out=False)
     posts = pagination.items
-    return render_template('user.html', user=user, posts=posts, pagination=pagination)
+    return render_template('blog/user.html', user=user, posts=posts, pagination=pagination)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
@@ -61,7 +61,7 @@ def edit_profile():
     form.phone_number.data = current_user.phone_number
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', form=form)
+    return render_template('blog/edit_profile.html', form=form)
 
 
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
@@ -91,7 +91,7 @@ def edit_profile_admin(id):
     form.phone_number.data = user.phone_number
     form.location.data = user.location
     form.about_me.data = user.about_me
-    return render_template('edit_profile.html', form=form, user=user)
+    return render_template('blog/edit_profile.html', form=form, user=user)
 
 
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
@@ -110,7 +110,7 @@ def post(id):
     pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(page, per_page=current_app.config[
         'CMS_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
-    return render_template('post.html', posts=[post], form=form, comments=comments, pagination=pagination)
+    return render_template('blog/post.html', posts=[post], form=form, comments=comments, pagination=pagination)
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -129,7 +129,7 @@ def edit(id):
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
     form.body.data = post.body
-    return render_template('edit_post.html', form=form)
+    return render_template('blog/edit_post.html', form=form)
 
 
 @main.route('/follow/<username>')
@@ -158,7 +158,7 @@ def followers(username):
     page = request.args.get('page', 1, int)
     pagination = user.followers.paginate(page, per_page=current_app.config['CMS_FOLLOWERS_PER_PAGE'], error_out=False)
     follows = [{'user': item.follower, 'timestamp': item.timestamp} for item in pagination.items]
-    return render_template('followers.html', user=user, title='Followers of', endpoint='.followers',
+    return render_template('blog/followers.html', user=user, title='Followers of', endpoint='.followers',
                            pagination=pagination, follows=follows)
 
 
@@ -191,7 +191,7 @@ def followed_by(username):
         error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title="{}关注的用户".format(user.username),
+    return render_template('blog/followers.html', user=user, title="{}关注的用户".format(user.username),
                            endpoint='.followed_by', pagination=pagination,
                            follows=follows)
 
@@ -220,7 +220,7 @@ def moderate():
     pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(page, per_page=current_app.config[
         'CMS_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
-    return render_template('moderate.html', comments=comments, pagination=pagination, page=page)
+    return render_template('blog/moderate.html', comments=comments, pagination=pagination, page=page)
 
 
 @main.route('/moderate/enable/<int:id>')

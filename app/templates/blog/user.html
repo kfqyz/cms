@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% import "_macros.html" as macros %}
+{% extends "common/base.html" %}
+{% import "common/_macros.html" as macros %}
 {% block title %}{{ super() }}--{{ user.username }}{% endblock %}
 
 {% block page_content %}
@@ -39,20 +39,20 @@
                 {% endif %}
             </p>
             <p>
-                {% if current_user == user %}
-                    <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
-                        修改资料
-                    </a>
-                {% elif current_user.is_administrator() %}
+                {% if current_user.is_administrator() %}
                     <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin',id=user.id) }}">
                         管理员修改
+                    </a>
+                {% elif current_user == user %}
+                    <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
+                        修改资料
                     </a>
                 {% endif %}
             </p>
         </div>
     </div>
     <h3>{{ user.username }}发表的文章：</h3>
-    {% include "_posts.html" %}
+    {% include "blog/_posts.html" %}
     {% if pagination %}
         <div class="pagination">
             {{ macros.pagination_widget(pagination,'.user',username=user.username) }}

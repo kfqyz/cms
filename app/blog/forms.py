@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from ..models import User, Role
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, NumberRange, Email, Regexp, ValidationError
+
+from ..models import User, Role
 
 
 class EditProfileForm(FlaskForm):

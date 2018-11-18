@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import "_macros.html" as macros %}
+{% import "common/_macros.html" as macros %}
 {% block title %}{{ super() }} -- 首页{% endblock %}
 
 {% block page_content %}
@@ -22,7 +22,7 @@
         <li{% if show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_followed') }}">我关注的文章</a></li>
         {% endif %}
     </ul>
-    {% include '_posts.html' %}
+        {% include 'blog/_posts.html' %}
 </div>
     {% if pagination %}
         <div class="pagination">

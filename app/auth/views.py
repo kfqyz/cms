@@ -22,7 +22,7 @@ def before_request():
 @auth.route('/unconfirmed')
 def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('blog.index'))
     return render_template('auth/unconfirmed.html')
 
 
@@ -37,7 +37,7 @@ def login():
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
-                next = url_for('main.index')
+                next = url_for('blog.index')
             return redirect(next)
         flash('输入的用户名或密码不正确！')
     return render_template('auth/login.html', form=form)
@@ -48,7 +48,7 @@ def login():
 def logout():
     logout_user()
     flash('你已经退出登录！')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('blog.index'))
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -71,13 +71,13 @@ def register():
 @login_required
 def confirm(token):
     if current_user.confirmed:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('blog.index'))
     if current_user.confirm(token):
         db.session.commit()
         flash('你已经成功验证账号，谢谢！')
     else:
         flash('验证账号无效或已经过期！')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('blog.index'))
 
 
 @auth.route('/confirm')
@@ -87,4 +87,4 @@ def resend_confirmation():
     send_email(current_user.email, '账号验证',
                'auth/email/confirm', user=current_user, token=token)
     flash('新的验证邮件已经发到你的邮箱，请查收。')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('blog.index'))
