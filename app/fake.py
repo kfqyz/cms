@@ -46,7 +46,7 @@ def comments(count=20):
     posts = Post.query.all()
     authors = User.query.all()
     for post in posts:
-        for author in sample(authors, 20):
+        for author in sample(authors, 5):
             comment = Comment(body=fake.text(randint(10, 20)), post_id=post.id, author_id=author.id)
             db.session.add(comment)
     db.session.commit()

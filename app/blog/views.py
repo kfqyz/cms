@@ -1,13 +1,13 @@
 from flask import render_template, redirect, url_for, flash, request, current_app, abort, make_response
 from flask_login import login_required, current_user
 
-from . import main
+from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
 from ..models import db, User, Role, Post, Permission, Comment
 
 
-@main.route('/', methods=['GET', 'POST'])
+@blog.route('/', methods=['GET', 'POST'])
 def index():
     form = PostForm()
     if current_user.can(Permission.WRITE) and form.validate_on_submit():
@@ -32,7 +32,7 @@ def index():
                            show_followed=show_followed, pagination=pagination)
 
 
-@main.route('/user/<username>')
+@blog.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, int)
@@ -44,7 +44,7 @@ def user(username):
     return render_template('blog/user.html', user=user, posts=posts, pagination=pagination)
 
 
-@main.route('/edit-profile', methods=['GET', 'POST'])
+@blog.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm()
@@ -64,7 +64,7 @@ def edit_profile():
     return render_template('blog/edit_profile.html', form=form)
 
 
-@main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
+@blog.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_profile_admin(id):
@@ -94,7 +94,7 @@ def edit_profile_admin(id):
     return render_template('blog/edit_profile.html', form=form, user=user)
 
 
-@main.route('/post/<int:id>', methods=['GET', 'POST'])
+@blog.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
@@ -113,7 +113,7 @@ def post(id):
     return render_template('blog/post.html', posts=[post], form=form, comments=comments, pagination=pagination)
 
 
-@main.route('/edit/<int:id>', methods=['GET', 'POST'])
+@blog.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit(id):
     post = Post.query.get_or_404(id)
@@ -132,7 +132,7 @@ def edit(id):
     return render_template('blog/edit_post.html', form=form)
 
 
-@main.route('/follow/<username>')
+@blog.route('/follow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
 def follow(username):
@@ -149,7 +149,7 @@ def follow(username):
     return redirect(url_for('.user', username=username))
 
 
-@main.route('/followers/<username>')
+@blog.route('/followers/<username>')
 def followers(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
@@ -162,7 +162,7 @@ def followers(username):
                            pagination=pagination, follows=follows)
 
 
-@main.route('/unfollow/<username>')
+@blog.route('/unfollow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
 def unfollow(username):
@@ -179,7 +179,7 @@ def unfollow(username):
     return redirect(url_for('.user', username=username))
 
 
-@main.route('/followed_by/<username>')
+@blog.route('/followed_by/<username>')
 def followed_by(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
@@ -196,7 +196,7 @@ def followed_by(username):
                            follows=follows)
 
 
-@main.route('/all')
+@blog.route('/all')
 @login_required
 def show_all():
     resp = make_response(redirect(url_for('.index')))
@@ -204,7 +204,7 @@ def show_all():
     return resp
 
 
-@main.route('/followed')
+@blog.route('/followed')
 @login_required
 def show_followed():
     resp = make_response(redirect(url_for('.index')))
@@ -212,7 +212,7 @@ def show_followed():
     return resp
 
 
-@main.route('/moderate')
+@blog.route('/moderate')
 @login_required
 @permission_required(Permission.MODERATE)
 def moderate():
@@ -223,7 +223,7 @@ def moderate():
     return render_template('blog/moderate.html', comments=comments, pagination=pagination, page=page)
 
 
-@main.route('/moderate/enable/<int:id>')
+@blog.route('/moderate/enable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE)
 def moderate_enable(id):
@@ -234,7 +234,7 @@ def moderate_enable(id):
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
 
 
-@main.route('/moderate/disable/<int:id>')
+@blog.route('/moderate/disable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE)
 def moderate_disable(id):
