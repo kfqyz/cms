@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -214,8 +215,8 @@ def load_user(user_id):
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256))
-    body = db.Column(db.Text)
+    title = db.Column(db.String(128), nullable=False)
+    body = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')

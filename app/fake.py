@@ -1,11 +1,13 @@
-from random import randint,sample
-from sqlalchemy.exc import IntegrityError
+from random import randint, sample
+
 from faker import Faker
+from sqlalchemy.exc import IntegrityError
+
 from . import db
-from .models import User, Post, Comment
+from .models import User, Post, Comment, Follow
 
 
-def users(count=100):
+def users(count=50):
     fake = Faker('zh_CN')
     i = 0
     while i < count:
@@ -26,13 +28,13 @@ def users(count=100):
             db.session.rollback()
 
 
-def posts(count=100):
+def posts():
     fake = Faker('zh_CN')
     user_count = User.query.count()
-    for i in range(count):
+    for i in range(20):
         u = User.query.offset(randint(0, user_count - 1)).first()
-        for i in range(1, 50):
-            p = Post(body=fake.text(),
+        for j in range(30):
+            p = Post(title=fake.text(randint(10, 16)), body=fake.text(),
                      timestamp=fake.past_date(),
                      author=u)
             db.session.add(p)
@@ -44,7 +46,18 @@ def comments(count=20):
     posts = Post.query.all()
     authors = User.query.all()
     for post in posts:
-        for author in sample(authors,20):
+        for author in sample(authors, 20):
             comment = Comment(body=fake.text(randint(10, 20)), post_id=post.id, author_id=author.id)
             db.session.add(comment)
     db.session.commit()
+
+
+def follow():
+    fake = Faker('zh_CN')
+    user_number = User.query.count()
+    for i in range(1, user_number + 1):
+        for j in range(1, user_number + 1):
+            if i != j:
+                follow = Follow(follower_id=i, followed_id=j)
+                db.session.add(follow)
+                db.session.commit()

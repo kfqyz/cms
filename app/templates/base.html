@@ -1,5 +1,5 @@
 {% extends 'bootstrap/base.html' %}
-{% block title %}武汉开发区一中办公系统{% endblock %}
+{% block title %}在水一方内容管理系统{% endblock %}
 {% block head %}
     {{ super() }}
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 {% block navbar %}
-    <div class="page-header" align="center"><h3>武汉开发区一中办公系统</h3></div>
+    <div class="page-header" align="center"><h3>在水一方内容管理系统</h3></div>
     <div class="container">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -25,17 +25,17 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">通知 <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">值班 </a></li>
+                        <li class="active"><a href="#">资讯 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">博客</a></li>
+                        <li><a href="#">论坛</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true" aria-expanded="false">其它内容 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">会议纪要</a></li>
-                                <li><a href="#">成绩查询</a></li>
-                                <li><a href="#">维修上报</a></li>
+                                <li><a href="#">视频</a></li>
+                                <li><a href="#">资源</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">文件资料</a></li>
+                                <li><a href="#">XXXX</a></li>
                             </ul>
                         </li>
                     </ul>

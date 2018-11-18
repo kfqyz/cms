@@ -24,10 +24,10 @@
             <p>
                 {% if current_user.can(Permission.FOLLOW) and user != current_user %}
                     {% if not current_user.is_following(user) %}
-                        <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-primary">关注</a>
+                        <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-xs btn-success">关注</a>
                     {% else %}
                         <a href="{{ url_for('.unfollow', username=user.username) }}"
-                           class="btn btn-default">取消关注</a>
+                           class="btn btn-xs btn-danger">取消关注</a>
                     {% endif %}
                 {% endif %}
                 <a href="{{ url_for('.followers', username=user.username) }}">粉丝数： <span
