@@ -35,7 +35,7 @@ class Role(UserMixin, db.Model):
         roles = {
             '注册用户': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
             '管理员': [Permission.FOLLOW, Permission.COMMENT,
-                          Permission.WRITE, Permission.MODERATE],
+                    Permission.WRITE, Permission.MODERATE],
             '超级管理员': [Permission.FOLLOW, Permission.COMMENT,
                       Permission.WRITE, Permission.MODERATE,
                       Permission.ADMIN],
@@ -98,8 +98,8 @@ class User(UserMixin, db.Model):
     followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic', cascade='all,delete-orphan')
-    comments = db.relationship('Comment',backref='author',lazy='dynamic')
-
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    categorys = db.relationship('Category', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -175,8 +175,7 @@ class User(UserMixin, db.Model):
 
     @property
     def followed_posts(self):
-        return  Post.query.join(Follow, Follow.followed_id == Post.author_id).filter(Follow.follower_id == self.id)
-
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id).filter(Follow.follower_id == self.id)
 
     @staticmethod
     def add_self_follows():
@@ -190,11 +189,12 @@ class User(UserMixin, db.Model):
         user_id_list = [user.id for user in User.query.all()]
         from random import sample
         for follower_id in user_id_list:
-            for followed_id in sample(user_id_list,num):
+            for followed_id in sample(user_id_list, num):
                 if followed_id != follower_id:
-                    follow = Follow(follower_id=follower_id,followed_id=followed_id)
+                    follow = Follow(follower_id=follower_id, followed_id=followed_id)
                     db.session.add(follow)
                     db.session.commit()
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
@@ -212,6 +212,21 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+post_categorys = db.Table('post_categorys',
+                          db.Column('category_id', db.Integer, db.ForeignKey('categorys.id')),
+                          db.Column('post_id', db.Integer, db.ForeignKey('posts.id')), )
+
+
+class Category(db.Model):
+    __tablename__ = 'categorys'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    parent_category_id = db.Column(db.Integer, db.ForeignKey('categorys.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    posts = db.relationship('Post', secondary=post_categorys, backref=db.backref('categorys', lazy='dynamic'),
+                            lazy='dynamic')
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -221,13 +236,15 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Post {}>'.format(self.title)
+
 
 class Comment(db.Model):
     __tablename__ = 'comments'
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    disabled =  db.Column(db.Boolean)
-    author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
-
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
