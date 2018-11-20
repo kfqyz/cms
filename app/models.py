@@ -33,14 +33,14 @@ class Role(UserMixin, db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
-            'Moderator': [Permission.FOLLOW, Permission.COMMENT,
+            '注册用户': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
+            '管理员': [Permission.FOLLOW, Permission.COMMENT,
                           Permission.WRITE, Permission.MODERATE],
-            'Administrator': [Permission.FOLLOW, Permission.COMMENT,
-                              Permission.WRITE, Permission.MODERATE,
-                              Permission.ADMIN],
+            '超级管理员': [Permission.FOLLOW, Permission.COMMENT,
+                      Permission.WRITE, Permission.MODERATE,
+                      Permission.ADMIN],
         }
-        default_role = 'User'
+        default_role = '注册用户'
         for r in roles:
             role = Role.query.filter_by(name=r).first()
             if role is None:
@@ -135,7 +135,7 @@ class User(UserMixin, db.Model):
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.email == current_app.config['CMS_ADMIN']:
-                self.role = Role.query.filter_by(name='Adminstrator').first()
+                self.role = Role.query.filter_by(name='超级管理员').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
         self.follow(self)
