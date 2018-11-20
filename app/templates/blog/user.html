@@ -52,7 +52,7 @@
         </div>
     </div>
     <h3>{{ user.username }}发表的文章：</h3>
-    {% include "blog/_posts.html" %}
+    {% include "blog/_posts_list.html" %}
     {% if pagination %}
         <div class="pagination">
             {{ macros.pagination_widget(pagination,'.user',username=user.username) }}
