@@ -7,15 +7,8 @@ from ..decorators import admin_required, permission_required
 from ..models import db, User, Role, Post, Permission, Comment
 
 
-@blog.route('/', methods=['GET', 'POST'])
+@blog.route('/')
 def index():
-    form = PostForm()
-    if current_user.can(Permission.WRITE) and form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.body.data,
-                    author=current_user._get_current_object())
-        db.session.add(post)
-        db.session.commit()
-        return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     show_followed = False
     if current_user.is_authenticated:
@@ -28,8 +21,7 @@ def index():
                                                                 per_page=current_app.config['CMS_POSTS_PER_PAGE'],
                                                                 error_out=False)
     posts = pagination.items
-    return render_template('index.html', form=form, posts=posts,
-                           show_followed=show_followed, pagination=pagination)
+    return render_template('index.html', posts=posts, show_followed=show_followed,pagination=pagination)
 
 
 @blog.route('/user/<username>')
@@ -122,12 +114,14 @@ def edit(id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
+        post.category = Post.query.get(form.category.data)
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
+    form.category.data = post.category_id
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 

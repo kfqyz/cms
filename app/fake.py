@@ -4,7 +4,7 @@ from faker import Faker
 from sqlalchemy.exc import IntegrityError
 
 from . import db
-from .models import User, Post, Comment, Follow
+from .models import User, Post, Comment, Follow,Category
 
 
 def users(count=50):
@@ -27,6 +27,16 @@ def users(count=50):
         except IntegrityError:
             db.session.rollback()
 
+
+def categorys():
+    users = User.query.all()
+    user_count = User.query.count()
+    category_list = ['心灵鸡汤','时事新闻','财经资讯','娱乐世界','我的生活','图片视频']
+    from random import randint
+    for i in range(20):
+        c = Category(name=category_list[randint(1,6)-1],user_id=randint(1,user_count))
+        db.session.add(c)
+    db.session.commit()
 
 def posts():
     fake = Faker('zh_CN')
@@ -60,4 +70,4 @@ def follow():
             if i != j:
                 follow = Follow(follower_id=i, followed_id=j)
                 db.session.add(follow)
-                db.session.commit()
+    db.session.commit()

@@ -42,7 +42,7 @@ def create_app(config_name):
     # 后台管理模块
     admin = Admin(app, '后台管理', index_view=AdminIndexView(), template_mode='bootstrap3')
 
-    from app.models import User, Role, Post, Comment, Follow
+    from app.models import User, Role, Post, Category, Comment, Follow
 
     class UserView(ModelView):
         can_delete = False
@@ -52,6 +52,7 @@ def create_app(config_name):
     admin.add_view(UserView(User, db.session, name='用户'))
     admin.add_view(ModelView(Role, db.session, name='角色'))
     admin.add_view(ModelView(Post, db.session, name='文章'))
+    admin.add_view(ModelView(Category, db.session, name='分类'))
     admin.add_view(ModelView(Comment, db.session, name='评论'))
     admin.add_view(ModelView(Follow, db.session, name='关注'))
 

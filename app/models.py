@@ -217,15 +217,17 @@ post_categorys = db.Table('post_categorys',
                           db.Column('post_id', db.Integer, db.ForeignKey('posts.id')), )
 
 
+
 class Category(db.Model):
     __tablename__ = 'categorys'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    parent_category_id = db.Column(db.Integer, db.ForeignKey('categorys.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     posts = db.relationship('Post', secondary=post_categorys, backref=db.backref('categorys', lazy='dynamic'),
                             lazy='dynamic')
 
+    def __repr__(self):
+        return '<Category {}>'.format(self.name)
 
 class Post(db.Model):
     __tablename__ = 'posts'

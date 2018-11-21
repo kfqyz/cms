@@ -1,10 +1,8 @@
 from __future__ import with_statement
-
-import logging
-from logging.config import fileConfig
-
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+from logging.config import fileConfig
+import logging
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -20,14 +18,13 @@ logger = logging.getLogger('alembic.env')
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from flask import current_app
-
-config.set_blog_option('sqlalchemy.url',
+config.set_main_option('sqlalchemy.url',
                        current_app.config.get('SQLALCHEMY_DATABASE_URI'))
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
-# my_important_option = config.get_blog_option("my_important_option")
+# my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
 
@@ -43,7 +40,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_blog_option("sqlalchemy.url")
+    url = config.get_main_option("sqlalchemy.url")
     context.configure(url=url)
 
     with context.begin_transaction():
