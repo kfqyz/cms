@@ -22,6 +22,13 @@
             <p>注册时间：{{ moment(user.member_since).format('L') }}</p>
             <p>访问时间：{{ moment(user.last_seen).fromNow() }}</p>
             <p>
+
+                <a href="{{ url_for('.followers', username=user.username) }}">粉丝： <span
+                        class="badge">{{ user.followers.count() - 1 }}</span></a>
+                <a href="{{ url_for('.followed_by', username=user.username) }}">关注： <span
+                        class="badge">{{ user.followed.count() - 1 }}</span></a>
+
+
                 {% if current_user.can(Permission.FOLLOW) and user != current_user %}
                     {% if not current_user.is_following(user) %}
                         <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-xs btn-success">关注</a>
@@ -30,12 +37,9 @@
                            class="btn btn-xs btn-danger">取消关注</a>
                     {% endif %}
                 {% endif %}
-                <a href="{{ url_for('.followers', username=user.username) }}">粉丝数： <span
-                        class="badge">{{ user.followers.count() - 1 }}</span></a>
-                <a href="{{ url_for('.followed_by', username=user.username) }}">我的关注： <span
-                        class="badge">{{ user.followed.count() - 1 }}</span></a>
+
                 {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
-                    | <span class="label label-default">Follows you</span>
+                    | <span class="label label-default">他是我的粉丝</span>
                 {% endif %}
             </p>
             <p>

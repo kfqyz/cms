@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
-from ..models import db, User, Role, Post, Permission, Comment
+from ..models import db, User, Role, Post, Permission, Comment, Category
 
 
 @blog.route('/')
@@ -114,14 +114,14 @@ def edit(id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
-        post.category = Post.query.get(form.category.data)
+        post.category = Category.query.get(form.category.data)
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
-    form.category.data = post.category_id
+    form.category.data = post.categorys.all()
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 

@@ -214,8 +214,7 @@ def load_user(user_id):
 
 post_categorys = db.Table('post_categorys',
                           db.Column('category_id', db.Integer, db.ForeignKey('categorys.id')),
-                          db.Column('post_id', db.Integer, db.ForeignKey('posts.id')), )
-
+                          db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
 
 
 class Category(db.Model):
@@ -223,11 +222,10 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    posts = db.relationship('Post', secondary=post_categorys, backref=db.backref('categorys', lazy='dynamic'),
-                            lazy='dynamic')
 
     def __repr__(self):
         return '<Category {}>'.format(self.name)
+
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -237,6 +235,8 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    categorys = db.relationship('Category', secondary=post_categorys, backref=db.backref('posts', lazy='dynamic'),
+                                lazy='dynamic')
 
     def __repr__(self):
         return '<Post {}>'.format(self.title)

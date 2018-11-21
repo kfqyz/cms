@@ -46,7 +46,7 @@ def create_app(config_name):
 
     class UserView(ModelView):
         can_delete = False
-        column_exclude_list = ['password_hash', 'about_me']
+        column_exclude_list = ['password_hash', 'about_me', 'posts', 'followers', 'followed']
         column_searchable_list = ['username', 'email']
 
     admin.add_view(UserView(User, db.session, name='用户'))

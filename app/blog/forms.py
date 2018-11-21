@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, BooleanField, SelectField, \
-    SelectMultipleField
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, NumberRange, Email, Regexp, ValidationError
 
 from ..models import User, Role, Category
@@ -47,13 +46,13 @@ class EditProfileAdminForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
-    category = SelectMultipleField('文章分类', coerce=int)
+    category = SelectField('文章分类', coerce=int)
     body = TextAreaField('今天写点什么吧', validators=[DataRequired()], render_kw={'rows': 10})
     submit = SubmitField('提交')
 
     def __init__(self,*args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
-        self.category.choices = [(category.id, category.name) for category in Category.query.all()]
+        self.category.choice = [(category.id, category.name) for category in Category.query.all()]
 
 
 class CommentForm(FlaskForm):
