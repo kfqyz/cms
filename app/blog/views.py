@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
-from ..models import db, User, Role, Post, Permission, Comment, Category
+from ..models import db, User, Role, Post, Permission, Comment
 
 
 @blog.route('/')
@@ -21,7 +21,7 @@ def index():
                                                                 per_page=current_app.config['CMS_POSTS_PER_PAGE'],
                                                                 error_out=False)
     posts = pagination.items
-    return render_template('index.html', posts=posts, show_followed=show_followed,pagination=pagination)
+    return render_template('index.html', posts=posts, show_followed=show_followed, pagination=pagination)
 
 
 @blog.route('/user/<username>')
@@ -114,16 +114,30 @@ def edit(id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
-        post.category = Category.query.get(form.category.data)
+        post.categorys = form.categorys.data
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
-    form.category.data = post.categorys.all()
+    form.categorys.data = post.categorys.all()
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
+
+
+@blog.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, categorys=form.category.data[0], body=form.body.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        flash('文章发表成功！')
+        return redirect(url_for('.post', id=post.id))
+    return render_template('blog/new_post.html', form=form)
 
 
 @blog.route('/follow/<username>')
