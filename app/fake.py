@@ -4,8 +4,45 @@ from faker import Faker
 from sqlalchemy.exc import IntegrityError
 
 from . import db
-from .models import User, Post, Comment, Follow, Category
+from .models import User, Post, Comment, Follow, Category, Permission, Role
 
+
+def fake_all():
+    roles()
+    print('Successful fake roles.')
+    users()
+    print('Successful fake users.')
+    categorys()
+    print('Successful fake categorys.')
+    posts()
+    print('Successful fake posts.')
+    comments()
+    print('Successful fake comments.')
+    follow()
+    print('Successful fake follow.')
+    print('fake all is ok ^-^ ')
+
+
+def roles():
+    roles = {
+        '注册用户': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
+        '管理员': [Permission.FOLLOW, Permission.COMMENT,
+                Permission.WRITE, Permission.MODERATE],
+        '超级管理员': [Permission.FOLLOW, Permission.COMMENT,
+                  Permission.WRITE, Permission.MODERATE,
+                  Permission.ADMIN],
+    }
+    default_role = '注册用户'
+    for r in roles:
+        role = Role.query.filter_by(name=r).first()
+        if role is None:
+            role = Role(name=r)
+        role.reset_permissions()
+        for perm in roles[r]:
+            role.add_permission(perm)
+        role.default = (role.name == default_role)
+        db.session.add(role)
+    db.session.commit()
 
 def users(count=50):
     fake = Faker('zh_CN')

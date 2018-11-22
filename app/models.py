@@ -30,27 +30,6 @@ class Role(UserMixin, db.Model):
         if self.permissions is None:
             self.permissions = 0
 
-    @staticmethod
-    def insert_roles():
-        roles = {
-            '注册用户': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
-            '管理员': [Permission.FOLLOW, Permission.COMMENT,
-                    Permission.WRITE, Permission.MODERATE],
-            '超级管理员': [Permission.FOLLOW, Permission.COMMENT,
-                      Permission.WRITE, Permission.MODERATE,
-                      Permission.ADMIN],
-        }
-        default_role = '注册用户'
-        for r in roles:
-            role = Role.query.filter_by(name=r).first()
-            if role is None:
-                role = Role(name=r)
-            role.reset_permissions()
-            for perm in roles[r]:
-                role.add_permission(perm)
-            role.default = (role.name == default_role)
-            db.session.add(role)
-        db.session.commit()
 
     def add_permission(self, perm):
         if not self.has_permission(perm):
@@ -212,31 +191,42 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-post_categorys = db.Table('post_categorys',
-                          db.Column('category_id', db.Integer, db.ForeignKey('categorys.id')),
+post_categorys = db.Table('post_categorys', db.Column('category_id', db.Integer, db.ForeignKey('categorys.id')),
                           db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
 
 
 class Category(db.Model):
     __tablename__ = 'categorys'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
+    name = db.Column(db.String(64), nullable=False, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return '<Category {}>'.format(self.name)
 
 
+post_tags = db.Table('post_tags', db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+                     db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
+
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False, unique=True)
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128), nullable=False)
+    title = db.Column(db.String(128), nullable=False, unique=True)
     body = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
     categorys = db.relationship('Category', secondary=post_categorys, backref=db.backref('posts', lazy='dynamic'),
                                 lazy='dynamic')
+    tags = db.relationship('Tag', secondary=post_tags, backref=db.backref('posts', lazy='dynamic'),
+                           lazy='dynamic')
 
     def __repr__(self):
         return '<Post {}>'.format(self.title)
