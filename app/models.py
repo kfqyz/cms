@@ -30,7 +30,6 @@ class Role(UserMixin, db.Model):
         if self.permissions is None:
             self.permissions = 0
 
-
     def add_permission(self, perm):
         if not self.has_permission(perm):
             self.permissions += perm
@@ -46,8 +45,8 @@ class Role(UserMixin, db.Model):
         return self.permissions & perm == perm
 
     def __repr__(self):
-        return '<Role {}>'.format(self.name)
-
+        return self.name
+    
 
 class Follow(db.Model):
     __tablename__ = 'follows'

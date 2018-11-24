@@ -42,12 +42,14 @@ def create_app(config_name):
     # 后台管理模块
     admin = Admin(app, '后台管理', index_view=AdminIndexView(), template_mode='bootstrap3')
 
-    from app.models import User, Role, Post, Category, Tag, Comment, Follow
+    from .models import User, Role, Post, Category, Tag, Comment, Follow
 
     class UserView(ModelView):
         can_delete = False
         column_exclude_list = ['password_hash', 'about_me', 'posts', 'followers', 'followed']
         column_searchable_list = ['username', 'email']
+        column_labels = dict(username='用户名', email='邮箱', phone_number='电话', role='角色', confirmed='验证', name='姓名',
+                             location='地址', memeber_sence='注册时间', last_seen='最后登录')
 
     admin.add_view(UserView(User, db.session, name='用户'))
     admin.add_view(ModelView(Role, db.session, name='角色'))
