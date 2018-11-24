@@ -105,9 +105,9 @@ def post(id):
     return render_template('blog/post.html', posts=[post], form=form, comments=comments, pagination=pagination)
 
 
-@blog.route('/edit/<int:id>', methods=['GET', 'POST'])
+@blog.route('/edit_post/<int:id>', methods=['GET', 'POST'])
 @login_required
-def edit(id):
+def edit_post(id):
     post = Post.query.get_or_404(id)
     if current_user != post.author and not current_user.can(Permission.ADMIN):
         abort(403)
@@ -130,14 +130,31 @@ def edit(id):
 @login_required
 def new_post():
     form = PostForm()
-    if form.validate_on_submit():
-        post = Post(title=form.title.data, categorys=form.category.data[0], body=form.body.data,
+    if current_user.can(Permission.WRITE) and form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data,
                     author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
         flash('文章发表成功！')
         return redirect(url_for('.post', id=post.id))
     return render_template('blog/new_post.html', form=form)
+
+
+@blog.route('/delete_post/<int:id>')
+@login_required
+def delete_post(id):
+    post = Post.query.filter_by(id=id).first()
+    if not post:
+        flash('要删除的文章不存在。')
+        return redirect(url_for('.index'))
+    user = User.query.filter_by(id=post.author_id).first()
+    if current_user.id == user.id or current_user.is_administrator():
+        db.session.delete(post)
+        db.session.commit()
+        flash('文章删除成功。')
+        return redirect(url_for('.index'))
+    flash('你没删除的权限')
+    return redirect(url_for('.index'))
 
 
 @blog.route('/follow/<username>')
@@ -251,3 +268,4 @@ def moderate_disable(id):
     db.session.add(comment)
     db.session.commit()
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
+

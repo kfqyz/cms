@@ -48,7 +48,7 @@ class EditProfileAdminForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
     categorys = SelectMultipleField('文章分类', coerce=int)
-    body = TextAreaField('今天写点什么吧', validators=[DataRequired()], render_kw={'id': 'editor'})
+    body = TextAreaField('今天写点什么吧', validators=[DataRequired()])
     # tag = StringField('文章标签')
     submit = SubmitField('提交')
 
