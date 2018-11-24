@@ -46,7 +46,7 @@ class Role(UserMixin, db.Model):
 
     def __repr__(self):
         return self.name
-    
+
 
 class Follow(db.Model):
     __tablename__ = 'follows'
@@ -80,7 +80,7 @@ class User(UserMixin, db.Model):
     categorys = db.relationship('Category', backref='user', lazy='dynamic')
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return self.username
 
     @property
     def password(self):
@@ -201,7 +201,7 @@ class Category(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return '<Category {}>'.format(self.name)
+        return self.name
 
 
 post_tags = db.Table('post_tags', db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -231,7 +231,7 @@ class Post(db.Model):
                            lazy='dynamic')
 
     def __repr__(self):
-        return '<Post {}>'.format(self.title)
+        return self.title
 
 
 class Comment(db.Model):
