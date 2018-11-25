@@ -1,10 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
 from wtforms import ValidationError
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
+from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, NumberRange
+
 from ..models import User
 
 
+# 登录表单
 class LoginForm(FlaskForm):
     account = StringField('用户名/邮箱/手机号', validators=[DataRequired(), Length(1, 64)],
                           render_kw={'placeholder': '用户名/邮箱/手机号'})
@@ -13,11 +15,15 @@ class LoginForm(FlaskForm):
     submit = SubmitField('登  录')
 
 
+# 注册表单
 class RegistrationForm(FlaskForm):
-    email = StringField('邮  箱', validators=[DataRequired(), Length(1, 64), Email()], render_kw={'placeholder': '请输入邮箱'})
     username = StringField('用户名', validators=[DataRequired(), Length(1, 64), \
                                               Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, \
                                                      '用户名只能由字母、数字、点或下划线组成！')], render_kw={'placeholder': '请输入用户名'})
+    email = StringField('邮  箱', validators=[DataRequired(), Length(1, 64), Email()], render_kw={'placeholder': '请输入邮箱'})
+    phone_number = IntegerField('手机号',
+                                validators=[DataRequired(), NumberRange(1300000000, 19900000000, message='请输入正确的手机号')],
+                                render_kw={'placeholder': '请输入手机号'})
     password = PasswordField('密  码', validators=[DataRequired()], render_kw={'placeholder': '请输入密码'})
     password2 = PasswordField('重复密码', validators=[DataRequired(), \
                                                   EqualTo('password', message='重复密码不一致')],
@@ -31,3 +37,7 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('该用户名已经存在！')
+
+    def validate_phone_number(self, field):
+        if User.query.filter_by(phone_number=field.data).first():
+            raise ValidationError('该手机号已经存在！')
