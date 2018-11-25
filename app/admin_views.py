@@ -56,8 +56,8 @@ def add_admin_views():
 
     class CategoryView(MyModelView):
         column_searchable_list = ['name']
-        column_editable_list = ['name', 'user']
-        column_labels = dict(name='类别名称', user='所属用户')
+        column_editable_list = ['name']
+        column_labels = dict(name='类别名称')
 
     class TagView(MyModelView):
         column_searchable_list = ['name']

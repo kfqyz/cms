@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
-from ..models import db, User, Role, Post, Permission, Comment
+from ..models import db, User, Role, Post, Permission, Comment, Category
 
 
 @blog.route('/')
@@ -99,10 +99,10 @@ def post(id):
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) // current_app.config['CMS_COMMENTS_PER_PAGE'] + 1
-    pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(page, per_page=current_app.config[
+    pagination = post.comments.order_by(Comment.timestamp.desc()).paginate(page, per_page=current_app.config[
         'CMS_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
-    return render_template('blog/post.html', posts=[post], form=form, comments=comments, pagination=pagination)
+    return render_template('blog/post.html', post=post, form=form, comments=comments, pagination=pagination)
 
 
 @blog.route('/edit_post/<int:id>', methods=['GET', 'POST'])
@@ -111,17 +111,18 @@ def edit_post(id):
     post = Post.query.get_or_404(id)
     if current_user != post.author and not current_user.can(Permission.ADMIN):
         abort(403)
-    form = PostForm()
+    form = PostForm(post=post)
     if form.validate_on_submit():
         post.title = form.title.data
-        post.categorys = form.categorys.data
+        post.categorys = [Category.query.filter_by(id=id).first() for id in form.categorys.data]
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
-    form.categorys.data = post.categorys.all()
+    form.categorys.default = [category.id for category in post.categorys.all()]
+    form.tag.data = post.tags.all()
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 
@@ -132,6 +133,7 @@ def new_post():
     form = PostForm()
     if current_user.can(Permission.WRITE) and form.validate_on_submit():
         post = Post(title=form.title.data, body=form.body.data,
+                    categorys=[Category.query.filter_by(id=id).first() for id in form.categorys.data],
                     author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
@@ -268,4 +270,3 @@ def moderate_disable(id):
     db.session.add(comment)
     db.session.commit()
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
-

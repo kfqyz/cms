@@ -29,7 +29,6 @@ class EditProfileAdminForm(FlaskForm):
     def __init__(self, user, *args, **kwargs):
         super(EditProfileAdminForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name) for role in Role.query.order_by(Role.name).all()]
-
         self.user = user
 
     def validate_email(self, field):
@@ -47,12 +46,12 @@ class EditProfileAdminForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
+    body = TextAreaField('文章内容', validators=[DataRequired()])
     categorys = SelectMultipleField('文章分类', coerce=int)
-    body = TextAreaField('今天写点什么吧', validators=[DataRequired()])
-    # tag = StringField('文章标签')
+    tag = StringField('文章标签')
     submit = SubmitField('提交')
 
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         self.categorys.choices = [(category.id, category.name) for category in Category.query.all()]
 

@@ -70,6 +70,7 @@ class User(UserMixin, db.Model):
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    categorys = db.relationship('Category', backref='user', lazy='dynamic')
     followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
                                lazy='dynamic', cascade='all,delete-orphan')
@@ -77,7 +78,6 @@ class User(UserMixin, db.Model):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic', cascade='all,delete-orphan')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-    categorys = db.relationship('Category', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return self.username
@@ -201,7 +201,7 @@ class Category(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return self.name
+        return '{} {}'.format(self.id, self.name)
 
 
 post_tags = db.Table('post_tags', db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
