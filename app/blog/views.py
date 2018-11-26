@@ -24,6 +24,7 @@ def index():
     return render_template('index.html', posts=posts, show_followed=show_followed, pagination=pagination)
 
 
+# 用户页面
 @blog.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -36,6 +37,7 @@ def user(username):
     return render_template('blog/user.html', user=user, posts=posts, pagination=pagination)
 
 
+# 修改个人资料
 @blog.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -56,6 +58,7 @@ def edit_profile():
     return render_template('blog/edit_profile.html', form=form)
 
 
+# 管理员修改用户资料
 @blog.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
@@ -86,6 +89,7 @@ def edit_profile_admin(id):
     return render_template('blog/edit_profile.html', form=form, user=user)
 
 
+# 文章详情--发评论页面
 @blog.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
@@ -105,6 +109,7 @@ def post(id):
     return render_template('blog/post.html', post=post, form=form, comments=comments, pagination=pagination)
 
 
+# 修改文章
 @blog.route('/edit_post/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_post(id):
@@ -121,12 +126,13 @@ def edit_post(id):
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
-    form.categorys.default = [category.id for category in post.categorys.all()]
+    form.categorys.data = [category.id for category in post.categorys.all()]
     form.tag.data = post.tags.all()
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 
 
+# 新建文章
 @blog.route('/new_post', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -142,6 +148,7 @@ def new_post():
     return render_template('blog/new_post.html', form=form)
 
 
+# 删除文章
 @blog.route('/delete_post/<int:id>')
 @login_required
 def delete_post(id):
@@ -159,6 +166,7 @@ def delete_post(id):
     return redirect(url_for('.index'))
 
 
+# 关注用户
 @blog.route('/follow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
@@ -176,6 +184,7 @@ def follow(username):
     return redirect(url_for('.user', username=username))
 
 
+# 我的粉丝页面
 @blog.route('/followers/<username>')
 def followers(username):
     user = User.query.filter_by(username=username).first()
@@ -189,6 +198,7 @@ def followers(username):
                            pagination=pagination, follows=follows)
 
 
+# 取消关注
 @blog.route('/unfollow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
@@ -206,6 +216,7 @@ def unfollow(username):
     return redirect(url_for('.user', username=username))
 
 
+# 某用户的粉丝
 @blog.route('/followed_by/<username>')
 def followed_by(username):
     user = User.query.filter_by(username=username).first()
@@ -223,6 +234,7 @@ def followed_by(username):
                            follows=follows)
 
 
+# 首页tab:显示所有最新文章
 @blog.route('/all')
 @login_required
 def show_all():
@@ -231,6 +243,7 @@ def show_all():
     return resp
 
 
+# 首页tab:显示关注的最新文章
 @blog.route('/followed')
 @login_required
 def show_followed():
@@ -239,6 +252,7 @@ def show_followed():
     return resp
 
 
+# 管理评论
 @blog.route('/moderate')
 @login_required
 @permission_required(Permission.MODERATE)
@@ -250,6 +264,7 @@ def moderate():
     return render_template('blog/moderate.html', comments=comments, pagination=pagination, page=page)
 
 
+# 取消禁止评论
 @blog.route('/moderate/enable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE)
@@ -261,6 +276,7 @@ def moderate_enable(id):
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
 
 
+# 禁止评论
 @blog.route('/moderate/disable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE)

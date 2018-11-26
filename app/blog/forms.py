@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired, Length, NumberRange, Email, Regexp,
 from ..models import User, Role, Category
 
 
+# 用户修改个人资料
 class EditProfileForm(FlaskForm):
     name = StringField('姓名', validators=[Length(0, 64)])
     phone_number = IntegerField('手机号', validators=[NumberRange(10000000000, 19000000000, message='请输入正确的手机号')])
@@ -14,6 +15,7 @@ class EditProfileForm(FlaskForm):
     submit = SubmitField('提交')
 
 
+#管理员修改用户资料
 class EditProfileAdminForm(FlaskForm):
     email = StringField('邮箱', validators=[DataRequired(), Length(1, 64), Email()])
     username = StringField('用户名', validators=[DataRequired(), Length(0, 64),
@@ -44,6 +46,7 @@ class EditProfileAdminForm(FlaskForm):
             raise ValidationError('该手机号已经注册了。')
 
 
+#发布、修改文章
 class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
     body = TextAreaField('文章内容', validators=[DataRequired()])
@@ -56,6 +59,7 @@ class PostForm(FlaskForm):
         self.categorys.choices = [(category.id, category.name) for category in Category.query.all()]
 
 
+#提交评论
 class CommentForm(FlaskForm):
     body = StringField('', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容'})
     submit = SubmitField('提交')
