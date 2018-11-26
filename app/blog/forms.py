@@ -15,7 +15,7 @@ class EditProfileForm(FlaskForm):
     submit = SubmitField('提交')
 
 
-#管理员修改用户资料
+# 管理员修改用户资料
 class EditProfileAdminForm(FlaskForm):
     email = StringField('邮箱', validators=[DataRequired(), Length(1, 64), Email()])
     username = StringField('用户名', validators=[DataRequired(), Length(0, 64),
@@ -46,12 +46,12 @@ class EditProfileAdminForm(FlaskForm):
             raise ValidationError('该手机号已经注册了。')
 
 
-#发布、修改文章
+# 发布、修改文章
 class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
     body = TextAreaField('文章内容', validators=[DataRequired()])
     categorys = SelectMultipleField('文章分类', coerce=int)
-    tag = StringField('文章标签')
+    # tag = StringField('文章标签')
     submit = SubmitField('提交')
 
     def __init__(self, *args, **kwargs):
@@ -59,7 +59,7 @@ class PostForm(FlaskForm):
         self.categorys.choices = [(category.id, category.name) for category in Category.query.all()]
 
 
-#提交评论
+# 提交评论
 class CommentForm(FlaskForm):
     body = StringField('', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容'})
     submit = SubmitField('提交')
