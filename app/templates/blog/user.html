@@ -48,9 +48,9 @@
                         管理员修改
                     </a>
                 {% elif current_user == user %}
-                    <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
-                        修改资料
-                    </a>
+                    <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">修改资料</a>
+                    <a class="btn btn-default" href="{{ url_for('auth.change_password') }}">修改密码</a>
+                    <a class="btn btn-default" href="{{ url_for('auth.change_email_request') }}">修改邮箱</a>
                 {% endif %}
             </p>
         </div>

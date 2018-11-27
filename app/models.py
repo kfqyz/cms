@@ -79,8 +79,21 @@ class User(UserMixin, db.Model):
                                 lazy='dynamic', cascade='all,delete-orphan')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
-    def __repr__(self):
-        return self.username
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            user.follow(user)
+            db.session.add(user)
+            db.session.commit()
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['CMS_ADMIN']:
+                self.role = Role.query.filter_by(name='超级管理员').first()
+            if self.role is None:
+                self.role = Role.query.filter_by(default=True).first()
+        self.follow(self)
 
     @property
     def password(self):
@@ -109,14 +122,45 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
-    def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
-        if self.role is None:
-            if self.email == current_app.config['CMS_ADMIN']:
-                self.role = Role.query.filter_by(name='超级管理员').first()
-            if self.role is None:
-                self.role = Role.query.filter_by(default=True).first()
-        self.follow(self)
+    def generate_reset_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id}).decode('utf-8')
+
+    @staticmethod
+    def reset_password(token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        user = User.query.get(data.get('reset'))
+        if user is None:
+            return False
+        user.password = new_password
+        db.session.add(user)
+        return True
+
+    def generate_email_change_token(self, new_email, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps(
+            {'change_email': self.id, 'new_email': new_email}).decode('utf-8')
+
+    def change_email(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        if data.get('change_email') != self.id:
+            return False
+        new_email = data.get('new_email')
+        if new_email is None:
+            return False
+        if self.query.filter_by(email=new_email).first() is not None:
+            return False
+        self.email = new_email
+        db.session.add(self)
+        return True
 
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
@@ -127,7 +171,6 @@ class User(UserMixin, db.Model):
     def ping(self):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
-        # db.session.commit()
 
     def follow(self, user):
         if not self.is_following(user):
@@ -156,13 +199,6 @@ class User(UserMixin, db.Model):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id).filter(Follow.follower_id == self.id)
 
     @staticmethod
-    def add_self_follows():
-        for user in User.query.all():
-            user.follow(user)
-            db.session.add(user)
-            db.session.commit()
-
-    @staticmethod
     def add_follow_eachother(num=10):
         user_id_list = [user.id for user in User.query.all()]
         from random import sample
@@ -172,6 +208,23 @@ class User(UserMixin, db.Model):
                     follow = Follow(follower_id=follower_id, followed_id=followed_id)
                     db.session.add(follow)
                     db.session.commit()
+
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config['SECRET_KEY'],
+                       expires_in=expiration)
+        return s.dumps({'id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
+
+    def __repr__(self):
+        return self.username
 
 
 class AnonymousUser(AnonymousUserMixin):
