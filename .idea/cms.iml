@@ -6,6 +6,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludePattern pattern=".env" />
     </content>
     <orderEntry type="jdk" jdkName="Pipenv (cms)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
