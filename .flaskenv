@@ -1,2 +1,0 @@
-FLASK_APP=cms
-SCRET_KEY='hello'
