@@ -127,7 +127,7 @@ def edit_post(id):
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
     form.categorys.data = [category.id for category in post.categorys.all()]
-    form.tag.data = post.tags.all()
+    # form.tag.data = post.tags.all()
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 
