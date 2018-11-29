@@ -1,5 +1,8 @@
-FLASK_APP=cms
-SECRET_KEY='hello'
-MAIL_SERVER=smtp.163.com
-MAIL_PORT=465
-MAIL_USE_TLS=true
+FLASK_APP = 'cms.py'
+FLASK_CONFIG = 'development'
+FLASK_RUN_HOST = '0.0.0.0'
+FLASK_RUN_PORT = '5000'
+SECRET_KEY = 'hello'
+MAIL_SERVER = 'smtp.163.com'
+MAIL_PORT = '465'
+MAIL_USE_TLS = 'true'
