@@ -1,0 +1,5 @@
+FLASK_APP=cms
+SECRET_KEY='hello'
+MAIL_SERVER=smtp.163.com
+MAIL_PORT=465
+MAIL_USE_TLS=true
