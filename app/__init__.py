@@ -2,6 +2,7 @@ from flask import Flask
 from flask_admin import Admin
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -14,8 +15,6 @@ babel = Babel()
 moment = Moment()
 db = SQLAlchemy()
 admin = Admin()
-
-from flask_login import LoginManager
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'

@@ -6,8 +6,14 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask_login import current_user
 
+from app.models.category import Category
+from app.models.comment import Comment
+from app.models.follow import Follow
+from app.models.post import Post
+from app.models.role import Role
+from app.models.tag import Tag
+from app.models.user import User
 from . import admin, db, babel
-from .models import User, Role, Post, Category, Tag, Comment, Follow
 
 path = op.join(op.dirname(__file__), 'static')
 
@@ -43,7 +49,7 @@ def add_admin_views():
         column_searchable_list = ['username', 'email', 'phone_number', 'location', 'name']
         column_editable_list = ['username', 'email', 'phone_number', 'role', 'confirmed', 'name', 'location']
         column_labels = dict(username='用户名', email='邮箱', phone_number='电话', role='角色', confirmed='验证', name='姓名',
-                             location='地址', member_since='注册时间', last_seen='最后登录')
+                             location='地址', create_time='注册时间', last_seen='最后登录')
 
     class RoleView(MyModelView):
         column_editable_list = ['name', 'default', 'permissions']
@@ -52,7 +58,7 @@ def add_admin_views():
     class PostView(MyModelView):
         column_searchable_list = ['title', 'body', 'author_id']
         column_editable_list = ['title', 'body']
-        column_labels = dict(title='标题', body='内容', author='作者', timestamp='发布时间')
+        column_labels = dict(title='标题', body='内容', author='作者', create_time='发布时间')
 
     class CategoryView(MyModelView):
         column_searchable_list = ['name']
@@ -65,13 +71,13 @@ def add_admin_views():
         column_labels = dict(name='标签名')
 
     class CommentView(MyModelView):
-        column_searchable_list = ['body', 'author_id', 'post_id', 'disabled', 'timestamp']
+        column_searchable_list = ['body', 'author_id', 'post_id', 'disabled', 'create_time']
         column_editable_list = ['body', 'disabled']
-        column_labels = dict(body='内容', author='发表者', post='评论文章', disabled='禁止否', timestamp='时间')
+        column_labels = dict(body='内容', author='发表者', post='评论文章', disabled='禁止否', create_time='时间')
 
     class FollowView(MyModelView):
         column_searchable_list = ['follower_id', 'followed_id']
-        column_labels = dict(follower='关注者', followed='被关注', timestamp='关注时间')
+        column_labels = dict(follower='关注者', followed='被关注', create_time='关注时间')
 
     admin.add_view(UserView(User, db.session, name='用户'))
     admin.add_view(RoleView(Role, db.session, name='角色'))

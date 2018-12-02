@@ -3,8 +3,13 @@ from random import randint, sample
 from faker import Faker
 from sqlalchemy.exc import IntegrityError
 
+from app.models.category import Category
+from app.models.comment import Comment
+from app.models.follow import Follow
+from app.models.post import Post
+from app.models.role import Permission, Role
+from app.models.user import User
 from . import db
-from .models import User, Post, Comment, Follow, Category, Permission, Role
 
 
 def fake_all():
@@ -44,6 +49,7 @@ def roles():
         db.session.add(role)
     db.session.commit()
 
+
 def users(count=50):
     fake = Faker('zh_CN')
     i = 0
@@ -56,7 +62,7 @@ def users(count=50):
                  name=fake.name(),
                  location=fake.city(),
                  about_me=fake.text(),
-                 member_since=fake.past_date())
+                 create_time=fake.past_date())
         db.session.add(u)
         try:
             db.session.commit()
@@ -66,11 +72,12 @@ def users(count=50):
 
 
 def categorys():
-    category_list = ['心灵鸡汤','时事新闻','财经资讯','娱乐世界','我的生活','图片视频']
+    category_list = ['心灵鸡汤', '时事新闻', '财经资讯', '娱乐世界', '我的生活', '图片视频']
     for i in category_list:
         c = Category(name=i)
         db.session.add(c)
-    db.session.commit()
+        db.session.commit()
+
 
 def posts():
     fake = Faker('zh_CN')
@@ -79,13 +86,13 @@ def posts():
         u = User.query.offset(randint(0, user_count - 1)).first()
         for j in range(30):
             p = Post(title=fake.text(randint(10, 16)), body=fake.text(),
-                     timestamp=fake.past_date(),
+                     create_time=fake.past_date(),
                      author=u)
             db.session.add(p)
-    db.session.commit()
+            db.session.commit()
 
 
-def comments(count=20):
+def comments():
     fake = Faker('zh_CN')
     posts = Post.query.all()
     authors = User.query.all()
@@ -93,15 +100,15 @@ def comments(count=20):
         for author in sample(authors, 5):
             comment = Comment(body=fake.text(randint(10, 20)), post_id=post.id, author_id=author.id)
             db.session.add(comment)
-    db.session.commit()
+            db.session.commit()
 
 
-def follow():
-    fake = Faker('zh_CN')
-    user_number = User.query.count()
-    for i in range(1, user_number + 1):
-        for j in range(1, user_number + 1):
-            if i != j:
-                follow = Follow(follower_id=i, followed_id=j)
+def follow(num=10):
+    user_id_list = [user.id for user in User.query.all()]
+    from random import sample
+    for follower_id in user_id_list:
+        for followed_id in sample(user_id_list, num):
+            if followed_id != follower_id:
+                follow = Follow(follower_id=follower_id, followed_id=followed_id)
                 db.session.add(follow)
-    db.session.commit()
+                db.session.commit()

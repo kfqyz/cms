@@ -1,12 +1,12 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user
 
-from . import auth
+from app import db
+from app.auth import auth
+from app.email import send_email
+from app.models.user import User
 from .forms import LoginForm, RegistrationForm, ChangeEmailForm, PasswordResetForm, PasswordResetRequestForm, \
     ChangePasswordForm
-from .. import db
-from ..email import send_email
-from ..models import User
 
 
 # 记录用户访问时间并检查用户是否通过验证
@@ -21,7 +21,7 @@ def before_request():
             return redirect(url_for('auth.unconfirmed'))
 
 
-#未验证用户view
+# 未验证用户view
 @auth.route('/unconfirmed')
 def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:

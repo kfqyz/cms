@@ -3,10 +3,12 @@ from wtforms import StringField, SubmitField, TextAreaField, IntegerField, Boole
     SelectMultipleField
 from wtforms.validators import DataRequired, Length, NumberRange, Email, Regexp, ValidationError
 
-from ..models import User, Role, Category
-
-
 # 用户修改个人资料
+from app.models.category import Category
+from app.models.role import Role
+from app.models.user import User
+
+
 class EditProfileForm(FlaskForm):
     name = StringField('姓名', validators=[Length(0, 64)])
     phone_number = IntegerField('手机号', validators=[NumberRange(10000000000, 19000000000, message='请输入正确的手机号')])

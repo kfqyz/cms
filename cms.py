@@ -3,7 +3,13 @@ import os
 from flask_migrate import Migrate
 
 from app import create_app, db
-from app.models import User, Role, Post, Follow, Comment, Category, Tag
+from app.models.category import Category
+from app.models.comment import Comment
+from app.models.follow import Follow
+from app.models.post import Post
+from app.models.role import Role
+from app.models.tag import Tag
+from app.models.user import User
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)

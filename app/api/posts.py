@@ -1,10 +1,11 @@
 from flask import jsonify, request, g, url_for, current_app
 
+from app.models.post import Post
+from app.models.role import Permission
 from . import api
 from .decorators import permission_required
 from .errors import forbidden
 from .. import db
-from ..models import Post, Permission
 
 
 @api.route('/posts/')

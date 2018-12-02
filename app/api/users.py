@@ -1,7 +1,8 @@
 from flask import jsonify, request, current_app, url_for
 
+from app.models.post import Post
+from app.models.user import User
 from . import api
-from ..models import User, Post
 
 
 @api.route('/users/<int:id>')
@@ -14,7 +15,7 @@ def get_user(id):
 def get_user_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
-    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
+    pagination = user.posts.order_by(Post.create_time.desc()).paginate(
         page, per_page=current_app.config['CMS_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
@@ -36,7 +37,7 @@ def get_user_posts(id):
 def get_user_followed_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
-    pagination = user.followed_posts.order_by(Post.timestamp.desc()).paginate(
+    pagination = user.followed_posts.order_by(Post.create_time.desc()).paginate(
         page, per_page=current_app.config['CMS_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items

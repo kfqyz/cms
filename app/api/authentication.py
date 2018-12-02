@@ -1,9 +1,9 @@
 from flask import g, jsonify
 from flask_httpauth import HTTPBasicAuth
 
+from app.models.user import User
 from . import api
 from .errors import unauthorized, forbidden
-from ..models import User
 
 auth = HTTPBasicAuth()
 
@@ -16,9 +16,8 @@ def verify_password(token, password):
         g.current_user = User.verify_auth_token(token)
         g.token_used = True
         return g.current_user is not None
-    user = User.query.filter_by(username=token).first() \
-           or User.query.filter_by(email=token).first() \
-           or User.query.filter_by(phone_number=token).first()
+    user = User.query.filter_by(username=token).first() or User.query.filter_by(
+        email=token).first() or User.query.filter_by(phone_number=token).first()
     if not user:
         return False
     g.current_user = user

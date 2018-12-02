@@ -1,15 +1,17 @@
 from flask import jsonify, request, g, url_for, current_app
 
+from app.models.comment import Comment
+from app.models.post import Post
+from app.models.role import Permission
 from . import api
 from .decorators import permission_required
 from .. import db
-from ..models import Post, Permission, Comment
 
 
 @api.route('/comments/')
 def get_comments():
     page = request.args.get('page', 1, type=int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
+    pagination = Comment.query.order_by(Comment.create_time.desc()).paginate(
         page, per_page=current_app.config['CMS_COMMENTS_PER_PAGE'],
         error_out=False)
     comments = pagination.items
@@ -37,7 +39,7 @@ def get_comment(id):
 def get_post_comments(id):
     post = Post.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
-    pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
+    pagination = post.comments.order_by(Comment.create_time.asc()).paginate(
         page, per_page=current_app.config['CMS_COMMENTS_PER_PAGE'],
         error_out=False)
     comments = pagination.items

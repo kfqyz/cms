@@ -19,7 +19,7 @@
             {% endif %}
             {% if user.email %}<p>邮箱：{{ user.email }}</p>{% endif %}
             {% if user.about_me %}<p>简介：{{ user.about_me }}</p>{% endif %}
-            <p>注册时间：{{ moment(user.member_since).format('L') }}</p>
+            <p>注册时间：{{ moment(user.create_time).format('L') }}</p>
             <p>访问时间：{{ moment(user.last_seen).fromNow() }}</p>
             <p>
 

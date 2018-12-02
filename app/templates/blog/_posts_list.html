@@ -4,7 +4,7 @@
             <div>&nbsp;&nbsp;
                 <a href="{{ url_for('.post',id=post.id) }}">{{ post.title }}</a>
                 <a href="{{ url_for('.user',username=post.author.username) }}">{{ post.author.username }}</a>
-                &nbsp;&nbsp;{{ moment(post.timestamp).fromNow() }}
+                &nbsp;&nbsp;{{ moment(post.create_time).fromNow() }}
             </div>
         </li>
     {% endfor %}

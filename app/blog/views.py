@@ -1,10 +1,15 @@
 from flask import render_template, redirect, url_for, flash, request, current_app, abort, make_response
 from flask_login import login_required, current_user
 
+from app import db
+from app.models.category import Category
+from app.models.comment import Comment
+from app.models.post import Post
+from app.models.role import Role, Permission
+from app.models.user import User
 from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
-from ..models import db, User, Role, Post, Permission, Comment, Category
 
 
 @blog.route('/')
@@ -17,9 +22,9 @@ def index():
         query = current_user.followed_posts
     else:
         query = Post.query
-    pagination = query.order_by(Post.timestamp.desc()).paginate(page,
-                                                                per_page=current_app.config['CMS_POSTS_PER_PAGE'],
-                                                                error_out=False)
+    pagination = query.order_by(Post.create_time.desc()).paginate(page,
+                                                                  per_page=current_app.config['CMS_POSTS_PER_PAGE'],
+                                                                  error_out=False)
     posts = pagination.items
     return render_template('index.html', posts=posts, show_followed=show_followed, pagination=pagination)
 
@@ -29,10 +34,10 @@ def index():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, int)
-    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(page,
-                                                                     per_page=current_app.config[
+    pagination = user.posts.order_by(Post.create_time.desc()).paginate(page,
+                                                                       per_page=current_app.config[
                                                                          'CMS_POSTS_PER_PAGE'],
-                                                                     error_out=False)
+                                                                       error_out=False)
     posts = pagination.items
     return render_template('blog/user.html', user=user, posts=posts, pagination=pagination)
 
@@ -103,7 +108,7 @@ def post(id):
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) // current_app.config['CMS_COMMENTS_PER_PAGE'] + 1
-    pagination = post.comments.order_by(Comment.timestamp.desc()).paginate(page, per_page=current_app.config[
+    pagination = post.comments.order_by(Comment.create_time.desc()).paginate(page, per_page=current_app.config[
         'CMS_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
     return render_template('blog/post.html', post=post, form=form, comments=comments, pagination=pagination)
@@ -193,7 +198,7 @@ def followers(username):
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, int)
     pagination = user.followers.paginate(page, per_page=current_app.config['CMS_FOLLOWERS_PER_PAGE'], error_out=False)
-    follows = [{'user': item.follower, 'timestamp': item.timestamp} for item in pagination.items]
+    follows = [{'user': item.follower, 'create_time': item.create_time} for item in pagination.items]
     return render_template('blog/followers.html', user=user, title='Followers of', endpoint='.followers',
                            pagination=pagination, follows=follows)
 
@@ -227,7 +232,7 @@ def followed_by(username):
     pagination = user.followed.paginate(
         page, per_page=current_app.config['CMS_FOLLOWERS_PER_PAGE'],
         error_out=False)
-    follows = [{'user': item.followed, 'timestamp': item.timestamp}
+    follows = [{'user': item.followed, 'create_time': item.create_time}
                for item in pagination.items]
     return render_template('blog/followers.html', user=user, title="{}关注的用户".format(user.username),
                            endpoint='.followed_by', pagination=pagination,
@@ -258,7 +263,7 @@ def show_followed():
 @permission_required(Permission.MODERATE)
 def moderate():
     page = request.args.get('page', 1, int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(page, per_page=current_app.config[
+    pagination = Comment.query.order_by(Comment.create_time.desc()).paginate(page, per_page=current_app.config[
         'CMS_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
     return render_template('blog/moderate.html', comments=comments, pagination=pagination, page=page)
