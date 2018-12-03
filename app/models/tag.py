@@ -1,11 +1,15 @@
-from sqlalchemy import Column, String
+from datetime import datetime
 
-from app.models.base import Base
+from sqlalchemy import Column, String, Integer, DateTime
+
+from app import db
 
 
-class Tag(Base):
+class Tag(db.Model):
     __tablename__ = 'tags'
+    id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, unique=True)
+    create_time = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return self.name

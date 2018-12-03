@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from flask_login import UserMixin
-from sqlalchemy import Column, String, Boolean, Integer
+from sqlalchemy import Column, String, Boolean, Integer, DateTime
 from sqlalchemy.orm import relationship
 
-from app.models.base import Base
+from app import db
 
 
 class Permission:
@@ -13,12 +15,14 @@ class Permission:
     ADMIN = 16
 
 
-class Role(UserMixin, Base):
+class Role(UserMixin, db.Model):
     __tablename__ = 'roles'
+    id = Column(Integer, primary_key=True)
     name = Column(String(64), unique=True)
     default = Column(Boolean, default=False, index=True)
     permissions = Column(Integer)
     users = relationship('User', backref='role', lazy='dynamic')
+    create_time = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)

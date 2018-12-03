@@ -8,14 +8,14 @@ from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import login_manager, db
-from app.models.base import Base
 from app.models.follow import Follow
 from app.models.post import Post
 from app.models.role import Role, Permission
 
 
-class User(UserMixin, Base):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True, index=True)
     email = Column(String(64), unique=True, index=True)
     phone_number = Column(Integer, unique=True, index=True)
@@ -25,6 +25,7 @@ class User(UserMixin, Base):
     name = Column(String(64))
     location = Column(String(64))
     about_me = Column(Text())
+    create_time = Column(DateTime, default=datetime.utcnow)
     last_seen = Column(DateTime(), default=datetime.utcnow)
     posts = relationship('Post', backref='author', lazy='dynamic')
     categorys = relationship('Category', backref='user', lazy='dynamic')
@@ -45,8 +46,7 @@ class User(UserMixin, Base):
                 db.session.commit()
 
     def __init__(self, **kwargs):
-        db.Model.__init__(self, **kwargs)
-        super(User, self).__init__()
+        super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.email == current_app.config['CMS_ADMIN']:
                 self.role = Role.query.filter_by(name='超级管理员').first()
