@@ -1,3 +1,4 @@
+SECRET_KEY = 'hello'
 FLASK_APP = 'cms.py'
 FLASK_ENV = 'development'
 FLASK_RUN_HOST = '0.0.0.0'

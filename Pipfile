@@ -4,6 +4,8 @@ url = "https://mirrors.aliyun.com/pypi/simple"
 verify_ssl = true
 
 [dev-packages]
+watchdog = "*"
+faker = "*"
 
 [packages]
 flask = "*"
@@ -14,12 +16,11 @@ flask-babelex = "*"
 flask-mail = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
+flask-migrate = "*"
 python-dotenv = "*"
 flask-httpauth = "*"
-flask-migrate = "*"
-faker = "*"
 flask-moment = "*"
-watchdog = "*"
+faker = "*"
 
 [requires]
 python_version = "3.7"

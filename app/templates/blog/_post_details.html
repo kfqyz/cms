@@ -1,33 +1,33 @@
 <ul class="posts">
-        <li class="post">
-            <div class="post-content">
-                <div class="post-title">
-                    <h3 class="page-header text-center">
-                        {{ post.title }}
-                    </h3>
-                    <h5 class="text-center">
-                        作者：<a
-                            href="{{ url_for('.user',username=post.author.username) }}">{{ post.author.username }}</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布于：{{ moment(post.create_time).fromNow() }}
-                    </h5>
-                </div>
-                <div class="post-body">
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp; {{ post.body }}</p>
-                </div>
-                <div class="post-footer">
-                    <a href="{{ url_for('.post', id = post.id) }}#comments">
-                        <button type="button" class="btn btn-xs btn-default">评论：{{ post.comments.count() }}</button>
-                    </a>
-                    {% if current_user == post.author or current_user.is_administrator() %}
-                        <a href="{{ url_for('.edit_post',id=post.id) }}">
-                            <button type="button" class="btn btn-xs btn-default">修改</button>
-                        </a>
-                        <a href="{{ url_for('.delete_post',id=post.id) }}">
-                            <button type="button" class="btn btn-xs btn-danger">删除</button>
-                        </a>
-                    {% endif %}
-
-                </div>
+    <li class="post">
+        <div class="post-content">
+            <div class="post-title">
+                <h3 class="page-header text-center">
+                    {{ post.title }}
+                </h3>
+                <h5 class="text-center">
+                    作者：<a
+                        href="{{ url_for('.user',username=post.author.username) }}">{{ post.author.username }}</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布于：{{ moment(post.create_time).fromNow() }}
+                </h5>
             </div>
-        </li>
+            <div class="post-body">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; {{ post.body }}</p>
+            </div>
+            <div class="post-footer">
+                <a href="{{ url_for('.post', id = post.id) }}#comments">
+                    <button type="button" class="btn btn-xs btn-default">评论：{{ post.comments.count() }}</button>
+                </a>
+                {% if current_user == post.author or current_user.is_administrator() %}
+                    <a href="{{ url_for('.edit_post',id=post.id) }}">
+                        <button type="button" class="btn btn-xs btn-default">修改</button>
+                    </a>
+                    <a href="{{ url_for('.delete_post',id=post.id) }}">
+                        <button type="button" class="btn btn-xs btn-danger">删除</button>
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+    </li>
 </ul>

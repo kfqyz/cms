@@ -1,0 +1,7 @@
+亲爱的 {{ user.username }}：
+为验证你的邮箱，请点击 <a href="{{ url_for('auth.change_email', token=token, _external=True) }}">点击这里</a>.
+你也可以复制链接到浏览器地址栏:
+{{ url_for('auth.change_email', token=token, _external=True) }}
+本邮件来自
+在水一方
+注意：请勿回复此邮件。
