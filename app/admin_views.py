@@ -62,13 +62,13 @@ def add_admin_views():
 
     class CategoryView(MyModelView):
         column_searchable_list = ['name']
-        column_editable_list = ['name']
-        column_labels = dict(name='类别名称')
+        column_editable_list = ['name','user','posts']
+        column_labels = dict(name='类别名称',user='所属用户',posts='文章')
 
     class TagView(MyModelView):
         column_searchable_list = ['name']
-        column_editable_list = ['name']
-        column_labels = dict(name='标签名')
+        column_editable_list = ['name','posts']
+        column_labels = dict(name='标签名',posts='文章')
 
     class CommentView(MyModelView):
         column_searchable_list = ['body', 'author_id', 'post_id', 'disabled', 'create_time']

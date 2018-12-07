@@ -10,6 +10,7 @@ from app.models.follow import Follow
 from app.models.post import Post
 from app.models.role import Permission, Role
 from app.models.user import User
+from app.models.tag import Tag
 
 fake = Faker('zh_CN')
 
@@ -82,12 +83,21 @@ def add_admin():
 
 
 def categorys():
-    # category_list = ['心灵鸡汤', '时事新闻', '财经资讯', '娱乐世界', '我的生活', '图片视频']
     users = User.query.all()
     for i in range(8):
-        for user in  users:
-            c = Category(name=fake.text(6).replace('.',''),user=user )
+        for user in users:
+            c = Category(name=fake.text(6).replace('.', ''), user=user)
             db.session.add(c)
+    db.session.commit()
+
+def tags():
+    posts = Post.query.all()
+    for i in range(4):
+        for post in posts:
+            name=fake.text(6).replace('.','')
+            if name  not in [tag.name for tag in Tag.query.all()]:
+                t = Tag(name=name, posts=[post])
+                db.session.add(t)
     db.session.commit()
 
 

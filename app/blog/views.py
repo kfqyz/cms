@@ -11,6 +11,7 @@ from app.models.comment import Comment
 from app.models.post import Post
 from app.models.role import Role, Permission
 from app.models.user import User
+from app.models.tag import Tag
 from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
@@ -130,13 +131,26 @@ def edit_post(id):
         post.title = form.title.data
         post.categorys = [Category.query.filter_by(id=id).first() for id in form.categorys.data]
         post.body = form.body.data
+
+        for name in form.tag.data.split():
+            tag = Tag.query.filter_by(name=name).first()
+            if tag is None:
+                tag = Tag(name=name)
+                db.session.add(tag)
+            if tag not in post.tags:
+                post.tags.append(tag)
+
+        for tag in post.tags:
+            if tag.name not in form.tag.data.split():
+                db.session.delete(tag)
+
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功！')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
     form.categorys.data = [category.id for category in post.categorys.all()]
-    # form.tag.data = post.tags.all()
+    form.tag.data = ' '.join([tag.name for tag in post.tags.all()])
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 

@@ -53,7 +53,7 @@ class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
     body = TextAreaField('文章内容', validators=[DataRequired()], render_kw={'id':'editor'})
     categorys = SelectMultipleField('文章分类', coerce=int)
-    # tag = StringField('文章标签')
+    tag = StringField('文章标签')
     submit = SubmitField('提交')
 
     def __init__(self, *args, **kwargs):
