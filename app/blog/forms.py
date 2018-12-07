@@ -1,3 +1,4 @@
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, BooleanField, SelectField, \
     SelectMultipleField
@@ -53,12 +54,13 @@ class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
     body = TextAreaField('文章内容', validators=[DataRequired()], render_kw={'id':'editor'})
     categorys = SelectMultipleField('文章分类', coerce=int)
-    tag = StringField('文章标签')
+    tags = StringField('文章标签', render_kw={'placeholder':'多个标签请用空格隔开'})
     submit = SubmitField('提交')
 
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
-        self.categorys.choices = [(category.id, category.name) for category in Category.query.all()]
+        user = current_user._get_current_object()
+        self.categorys.choices = [(category.id, category.name) for category in Category.query.filter_by(user=user).all()]
 
 
 # 提交评论

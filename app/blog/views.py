@@ -132,7 +132,7 @@ def edit_post(id):
         post.categorys = [Category.query.filter_by(id=id).first() for id in form.categorys.data]
         post.body = form.body.data
 
-        for name in form.tag.data.split():
+        for name in form.tags.data.split():
             tag = Tag.query.filter_by(name=name).first()
             if tag is None:
                 tag = Tag(name=name)
@@ -141,7 +141,7 @@ def edit_post(id):
                 post.tags.append(tag)
 
         for tag in post.tags:
-            if tag.name not in form.tag.data.split():
+            if tag.name not in form.tags.data.split():
                 db.session.delete(tag)
 
         db.session.add(post)
@@ -150,7 +150,7 @@ def edit_post(id):
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
     form.categorys.data = [category.id for category in post.categorys.all()]
-    form.tag.data = ' '.join([tag.name for tag in post.tags.all()])
+    form.tags.data = ' '.join([tag.name for tag in post.tags.all()])
     form.body.data = post.body
     return render_template('blog/edit_post.html', form=form)
 
@@ -164,6 +164,16 @@ def new_post():
         post = Post(title=form.title.data, body=form.body.data,
                     categorys=[Category.query.filter_by(id=id).first() for id in form.categorys.data],
                     author=current_user._get_current_object())
+
+        for name in form.tags.data.split():
+            tag = Tag.query.filter_by(name=name).first()
+            if tag is None:
+                tag = Tag(name=name)
+                db.session.add(tag)
+                post.tags.append(tag)
+            else:
+                post.tags.append(tag)
+
         db.session.add(post)
         db.session.commit()
         flash('文章发表成功！')
