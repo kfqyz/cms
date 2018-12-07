@@ -12,7 +12,7 @@
                 </h5>
             </div>
             <div class="post-body">
-                <p>&nbsp;&nbsp;&nbsp;&nbsp; {{ post.body }}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; {{ post.body | safe }}</p>
             </div>
             <div class="post-footer">
                 <a href="{{ url_for('.post', id = post.id) }}#comments">

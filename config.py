@@ -20,6 +20,8 @@ class Config:
     CMS_COMMENTS_PER_PAGE = 15
     CMS_SLOW_DB_QUERY_TIME = 0.5
 
+
+
     @staticmethod
     def init_app(app):
         pass

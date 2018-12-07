@@ -8,7 +8,7 @@ from app import db
 class Category(db.Model):
     __tablename__ = 'categorys'
     id = Column(Integer, primary_key=True)
-    name = Column(String(64), nullable=False, unique=True)
+    name = Column(String(64), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
     create_time = Column(DateTime, default=datetime.utcnow)
 

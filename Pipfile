@@ -1,7 +1,7 @@
 [[source]]
 name = "pypi"
-url = "https://mirrors.aliyun.com/pypi/simple"
-verify_ssl = true
+url = "http://pypi.douban.com/simple/"
+verify_ssl =false
 
 [dev-packages]
 watchdog = "*"
@@ -20,7 +20,6 @@ flask-migrate = "*"
 python-dotenv = "*"
 flask-httpauth = "*"
 flask-moment = "*"
-faker = "*"
 
 [requires]
 python_version = "3.7"

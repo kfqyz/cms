@@ -1,4 +1,8 @@
-from flask import render_template, redirect, url_for, flash, request, current_app, abort, make_response
+import os
+
+from flask import render_template, redirect, url_for, flash, request, current_app, abort, make_response, \
+    send_from_directory
+from flask_ckeditor import upload_fail, upload_success
 from flask_login import login_required, current_user
 
 from app import db
@@ -36,7 +40,7 @@ def user(username):
     page = request.args.get('page', 1, int)
     pagination = user.posts.order_by(Post.create_time.desc()).paginate(page,
                                                                        per_page=current_app.config[
-                                                                         'CMS_POSTS_PER_PAGE'],
+                                                                           'CMS_POSTS_PER_PAGE'],
                                                                        error_out=False)
     posts = pagination.items
     return render_template('blog/user.html', user=user, posts=posts, pagination=pagination)
@@ -291,3 +295,20 @@ def moderate_disable(id):
     db.session.add(comment)
     db.session.commit()
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
+
+
+@blog.route('/files/<filename>')
+def uploaded_files(filename):
+    path = current_app.config['UPLOADED_PATH']
+    return send_from_directory(path, filename)
+
+
+@blog.route('/upload', methods=['POST'])
+def upload():
+    f = request.files.get('upload')
+    extension = f.filename.split('.')[1].lower()
+    if extension not in ['jpg', 'gif', 'png', 'jpeg']:
+        return upload_fail(message='Image only!')
+    f.save(os.path.join(current_app.config['UPLOADED_PATH'], f.filename))
+    url = url_for('uploaded_files', filename=f.filename)
+    return upload_success(url=url)

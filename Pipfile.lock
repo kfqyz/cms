@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9abfe8848da1d9b2d4736b504fa809872e1c7a97c400af6af7d05ef0a6cdae50"
+            "sha256": "a926a21faf35df5a8b9eb09898b97a703547ce315cd445f8b18364fffaee7a36"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -10,8 +10,8 @@
         "sources": [
             {
                 "name": "pypi",
-                "url": "https://mirrors.aliyun.com/pypi/simple",
-                "verify_ssl": true
+                "url": "http://pypi.douban.com/simple/",
+                "verify_ssl": false
             }
         ]
     },
@@ -48,14 +48,6 @@
                 "sha256:4b9fd42d2824b79761799590697db45bf93daad511b130c50513af38da33df9b"
             ],
             "version": "==2.3.5"
-        },
-        "faker": {
-            "hashes": [
-                "sha256:c61a41d0dab8865b850bd00454fb11e90f3fd2a092d8bc90120d1e1c01cff906",
-                "sha256:f909ff9133ce0625ca388b6838190630ad7a593f87eaf058d872338a76241d5d"
-            ],
-            "index": "pypi",
-            "version": "==1.0.0"
         },
         "flask": {
             "hashes": [
@@ -239,13 +231,6 @@
                 "sha256:9de7c7dabcf06319becdb7e15099c44e5e34ba7062f9ba10bc00e562f5db3d04"
             ],
             "version": "==1.2.14"
-        },
-        "text-unidecode": {
-            "hashes": [
-                "sha256:5a1375bb2ba7968740508ae38d92e1f889a0832913cb1c447d5e2046061a396d",
-                "sha256:801e38bd550b943563660a91de8d4b6fa5df60a542be9093f7abf819f86050cc"
-            ],
-            "version": "==1.2"
         },
         "visitor": {
             "hashes": [

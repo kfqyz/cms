@@ -82,10 +82,12 @@ def add_admin():
 
 
 def categorys():
-    category_list = ['心灵鸡汤', '时事新闻', '财经资讯', '娱乐世界', '我的生活', '图片视频']
-    for i in category_list:
-        c = Category(name=i)
-        db.session.add(c)
+    # category_list = ['心灵鸡汤', '时事新闻', '财经资讯', '娱乐世界', '我的生活', '图片视频']
+    users = User.query.all()
+    for i in range(8):
+        for user in  users:
+            c = Category(name=fake.text(6).replace('.',''),user=user )
+            db.session.add(c)
     db.session.commit()
 
 
