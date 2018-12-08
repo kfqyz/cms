@@ -170,9 +170,7 @@ def new_post():
             if tag is None:
                 tag = Tag(name=name)
                 db.session.add(tag)
-                post.tags.append(tag)
-            else:
-                post.tags.append(tag)
+            post.tags.append(tag)
 
         db.session.add(post)
         db.session.commit()

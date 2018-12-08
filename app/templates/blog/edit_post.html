@@ -15,7 +15,9 @@
     <script src="{{ url_for('static', filename='ckeditor5/ckeditor.js') }}"></script>
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
+            .create(document.querySelector('#editor'),{
+                language:'zh-cn'
+            })
             .catch(error => {
                 console.error(error);
             });
