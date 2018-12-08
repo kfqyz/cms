@@ -15,7 +15,7 @@ class EditProfileForm(FlaskForm):
     phone_number = IntegerField('手机号', validators=[NumberRange(10000000000, 19000000000, message='请输入正确的手机号')])
     location = StringField('位置', validators=[Length(0, 64)])
     about_me = TextAreaField('简介')
-    submit = SubmitField('提交')
+    submit = SubmitField('提 交')
 
 
 # 管理员修改用户资料
@@ -29,7 +29,7 @@ class EditProfileAdminForm(FlaskForm):
     phone_number = IntegerField('手机号', validators=[NumberRange(10000000000, 19000000000, message='请输入正确的手机号')])
     location = StringField('位置', validators=[Length(0, 64)])
     about_me = TextAreaField('简介')
-    submit = SubmitField('提交')
+    submit = SubmitField('提 交')
 
     def __init__(self, user, *args, **kwargs):
         super(EditProfileAdminForm, self).__init__(*args, **kwargs)
@@ -55,7 +55,7 @@ class PostForm(FlaskForm):
     body = TextAreaField('文章内容', render_kw={'placeholder': '文章内容', 'id': 'editor'})
     categorys = SelectMultipleField('文章分类', coerce=int)
     tags = StringField('文章标签', render_kw={'placeholder': '多个标签请用空格隔开'})
-    submit = SubmitField('提交')
+    submit = SubmitField('提 交')
 
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
@@ -67,4 +67,4 @@ class PostForm(FlaskForm):
 # 提交评论
 class CommentForm(FlaskForm):
     body = StringField('', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容'})
-    submit = SubmitField('提交')
+    submit = SubmitField('提 交')

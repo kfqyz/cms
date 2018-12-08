@@ -11,11 +11,6 @@
             欢迎访问本站！
         {% endif %}
     </h3>
-{#    <div>#}
-{#        {% if current_user.can(Permission.WRITE) %}#}
-{#            {{ wtf.quick_form(form) }}#}
-{#        {% endif %}#}
-{#    </div>#}
     <div class="post-tabs">
         <ul class="nav nav-tabs">
             <li{% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_all') }}">最新文章</a></li>

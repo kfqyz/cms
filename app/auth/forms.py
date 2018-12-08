@@ -49,14 +49,14 @@ class ChangePasswordForm(FlaskForm):
         DataRequired(), EqualTo('password2', message='密码必须一致')])
     password2 = PasswordField('重复新密码',
                               validators=[DataRequired()])
-    submit = SubmitField('确定')
+    submit = SubmitField('确 定')
 
 
 # 密码重置
 class PasswordResetRequestForm(FlaskForm):
     email = StringField('注册邮箱', validators=[DataRequired(), Length(1, 64),
                                             Email()])
-    submit = SubmitField('确定')
+    submit = SubmitField('确 定')
 
 
 # 密码重置
@@ -64,7 +64,7 @@ class PasswordResetForm(FlaskForm):
     password = PasswordField('新密码', validators=[
         DataRequired(), EqualTo('password2', message='密码必须一致')])
     password2 = PasswordField('重复新密码', validators=[DataRequired()])
-    submit = SubmitField('确定')
+    submit = SubmitField('确 定')
 
 
 # 修改邮箱
@@ -72,7 +72,7 @@ class ChangeEmailForm(FlaskForm):
     email = StringField('新邮箱', validators=[DataRequired(), Length(1, 64),
                                            Email()])
     password = PasswordField('密码', validators=[DataRequired()])
-    submit = SubmitField('确定')
+    submit = SubmitField('确 定')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
@@ -85,7 +85,7 @@ class ChangePhoneNumberForm(FlaskForm):
                                 validators=[DataRequired(), NumberRange(1300000000, 19900000000, message='请输入正确的手机号')],
                                 render_kw={'placeholder': '请输入手机号'})
     password = PasswordField('密码', validators=[DataRequired()])
-    submit = SubmitField('确定')
+    submit = SubmitField('确 定')
 
     def validate_phone_number(self, field):
         if User.query.filter_by(phone_number=field.data).first():

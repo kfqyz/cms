@@ -1,0 +1,16 @@
+{% extends "common/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "common/_macros.html" as macros %}
+{% block title %}{{ super() }} -- {{ category.name }}{% endblock %}
+
+{% block page_content %}
+    <h5><a href="{{ url_for('blog.index') }}">所有文章</a> >> {{ category.name }}</h5>
+    <div class="post-tabs">
+        {% include 'blog/_posts_list.html' %}
+    </div>
+    {% if pagination %}
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination,'blog.category_post','',category.id) }}
+        </div>
+    {% endif %}
+{% endblock %}

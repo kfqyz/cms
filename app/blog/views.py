@@ -1,10 +1,5 @@
-import os
-
-from flask import render_template, redirect, url_for, flash, request, current_app, abort, make_response, \
-    send_from_directory
-from flask_ckeditor import upload_fail, upload_success
+from flask import render_template, redirect, url_for, flash, request, current_app, abort, make_response
 from flask_login import login_required, current_user
-
 from app import db
 from app.models.category import Category
 from app.models.comment import Comment
@@ -319,18 +314,12 @@ def moderate_disable(id):
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
 
 
-@blog.route('/files/<filename>')
-def uploaded_files(filename):
-    path = current_app.config['UPLOADED_PATH']
-    return send_from_directory(path, filename)
-
-
-@blog.route('/upload', methods=['POST'])
-def upload():
-    f = request.files.get('upload')
-    extension = f.filename.split('.')[1].lower()
-    if extension not in ['jpg', 'gif', 'png', 'jpeg']:
-        return upload_fail(message='Image only!')
-    f.save(os.path.join(current_app.config['UPLOADED_PATH'], f.filename))
-    url = url_for('uploaded_files', filename=f.filename)
-    return upload_success(url=url)
+# 文章分类列表
+@blog.route('/category/<int:c_id>')
+def category_post(c_id=1):
+    page = request.args.get('page', 1, type=int)
+    category = Category.query.get_or_404(c_id)
+    pagination = category.posts.order_by(Post.create_time.desc()).paginate(page, per_page=current_app.config[
+        'CMS_POSTS_PER_PAGE'], error_out=False)
+    posts = pagination.items
+    return render_template('blog/category_post.html', category=category, posts=posts, pagination=pagination)

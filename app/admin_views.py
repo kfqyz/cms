@@ -53,22 +53,22 @@ def add_admin_views():
 
     class RoleView(MyModelView):
         column_editable_list = ['name', 'default', 'permissions']
-        column_labels = dict(name='角色名称', default='缺省角色', permissions='权限')
+        column_labels = dict(name='角色名称', default='缺省角色', permissions='权限', create_time='时间')
 
     class PostView(MyModelView):
         column_searchable_list = ['title', 'body', 'author_id']
         column_editable_list = ['title', 'body']
-        column_labels = dict(title='标题', body='内容', author='作者', create_time='发布时间')
+        column_labels = dict(title='标题', body='内容', author='作者', create_time='时间')
 
     class CategoryView(MyModelView):
         column_searchable_list = ['name','user_id']
         column_editable_list = ['name','user','posts']
-        column_labels = dict(name='类别名称',user='所属用户',posts='文章')
+        column_labels = dict(name='类别名称',user='所属用户',posts='文章', create_time='时间')
 
     class TagView(MyModelView):
         column_searchable_list = ['name']
         column_editable_list = ['name','posts']
-        column_labels = dict(name='标签名',posts='文章')
+        column_labels = dict(name='标签名',posts='文章', create_time='时间')
 
     class CommentView(MyModelView):
         column_searchable_list = ['body', 'author_id', 'post_id', 'disabled', 'create_time']
@@ -77,7 +77,7 @@ def add_admin_views():
 
     class FollowView(MyModelView):
         column_searchable_list = ['follower_id', 'followed_id']
-        column_labels = dict(follower='关注者', followed='被关注', create_time='关注时间')
+        column_labels = dict(follower='关注者', followed='被关注', create_time='时间')
 
     admin.add_view(UserView(User, db.session, name='用户'))
     admin.add_view(RoleView(Role, db.session, name='角色'))
