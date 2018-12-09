@@ -22,6 +22,7 @@ class Config:
     CMS_SLOW_DB_QUERY_TIME = 0.5
 
     CKEDITOR_SERVE_LOCAL = True
+    CKEDITOR_PKG_TYPE = 'full'  # basic, standard and full.
     CKEDITOR_HEIGHT = 400
     CKEDITOR_ENABLE_CODESNIPPET = True
     CKEDITOR_FILE_UPLOADER = 'blog.upload'
