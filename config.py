@@ -27,7 +27,7 @@ class Config:
     CKEDITOR_ENABLE_CODESNIPPET = True
     CKEDITOR_FILE_UPLOADER = 'blog.upload'
     # CKEDITOR_ENABLE_CSRF = True  # if you want to enable CSRF protect, uncomment this line
-    UPLOADED_PATH = os.path.join(basedir, 'app/uploads')
+    UPLOADED_PATH = os.path.join(basedir, 'app/static/uploads')
 
     @staticmethod
     def init_app(app):

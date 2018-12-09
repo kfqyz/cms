@@ -2,9 +2,6 @@
     <ul class="pagination">
         <li{% if not pagination.has_prev %} class="disabled" {% endif %}>
             <a href="
-
-
-
                     {% if pagination.has_prev %}{{ url_for(endpoint,page=pagination.pre_num,**kwargs) }}{{ fragment }}{% else %}#{% endif %}">&laquo;</a>
         </li>
         {% for p in pagination.iter_pages() %}
@@ -24,10 +21,13 @@
         {% endfor %}
         <li{% if not pagination.has_next %} class="disabled" {% endif %}>
             <a href="
-
-
-
                     {% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num,**kwargs) }}{{ fragment }}{% else %}#{% endif %}">&raquo;</a>
         </li>
     </ul>
 {% endmacro %}
+
+{% macro nav_link(endpoint,text) -%}
+    <li class="{% if request.endpoint and request.endpoint == endpoint %}active{% endif %}">
+        <a class="navbar-link" href="{{ url_for(endpoint,**kwargs) }}">{{ text }}</a>
+    </li>
+{%- endmacro %}

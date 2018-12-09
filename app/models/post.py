@@ -17,9 +17,9 @@ class Post(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String(128), nullable=False, unique=True)
     body = Column(Text, nullable=False)
-    create_time = Column(DateTime, default=datetime.utcnow)
+    create_time = Column(DateTime, default=datetime.utcnow, index=True)
     author_id = Column(Integer, ForeignKey('users.id'))
-    comments = relationship('Comment', backref='post', lazy='dynamic')
+    comments = relationship('Comment', backref='post', lazy='dynamic', cascade='all')
     categorys = relationship('Category', secondary=post_categorys, backref=backref('posts', lazy='dynamic'),
                              lazy='dynamic')
     tags = relationship('Tag', secondary=post_tags, backref=backref('posts', lazy='dynamic'),

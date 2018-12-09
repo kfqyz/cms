@@ -9,8 +9,8 @@ from app.models.comment import Comment
 from app.models.follow import Follow
 from app.models.post import Post
 from app.models.role import Permission, Role
-from app.models.user import User
 from app.models.tag import Tag
+from app.models.user import User
 
 fake = Faker('zh_CN')
 
@@ -90,12 +90,13 @@ def categorys():
             db.session.add(c)
     db.session.commit()
 
+
 def tags():
     posts = Post.query.all()
     for i in range(4):
         for post in posts:
-            name=fake.text(6).replace('.','')
-            if name  not in [tag.name for tag in Tag.query.all()]:
+            name = fake.text(6).replace('.', '')
+            if name not in [tag.name for tag in Tag.query.all()]:
                 t = Tag(name=name, posts=[post])
                 db.session.add(t)
     db.session.commit()
@@ -118,7 +119,8 @@ def comments():
     authors = User.query.all()
     for post in posts:
         for author in sample(authors, 5):
-            comment = Comment(body=fake.text(randint(10, 20)), post_id=post.id, author_id=author.id)
+            comment = Comment(body=fake.text(randint(10, 20)), post_id=post.id, author_id=author.id,
+                              replied=Comment.query.get(randint(1, Comment.query.count())))
             db.session.add(comment)
     db.session.commit()
 
