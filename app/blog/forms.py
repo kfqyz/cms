@@ -1,3 +1,4 @@
+from flask_ckeditor import CKEditorField
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, BooleanField, SelectField, \
@@ -52,7 +53,7 @@ class EditProfileAdminForm(FlaskForm):
 # 发布、修改文章
 class PostForm(FlaskForm):
     title = StringField('文章标题', validators=[DataRequired()])
-    body = TextAreaField('文章内容', render_kw={'placeholder': '文章内容', 'id': 'editor'})
+    body = CKEditorField('文章内容', validators=[DataRequired()], render_kw={'placeholder': '文章内容'})
     categorys = SelectMultipleField('文章分类', coerce=int)
     tags = StringField('文章标签', render_kw={'placeholder': '多个标签请用空格隔开'})
     submit = SubmitField('提 交')

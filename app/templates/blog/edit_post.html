@@ -8,18 +8,7 @@
     </div>
     <div>
         {{ wtf.quick_form(form) }}
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
     </div>
-{% endblock %}
-{% block scripts %}
-    {{ super() }}
-    <script src="{{ url_for('static', filename='ckeditor5/ckeditor.js') }}"></script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'),{
-                language:'zh-cn'
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
 {% endblock %}

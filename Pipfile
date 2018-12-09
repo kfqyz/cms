@@ -20,6 +20,9 @@ flask-migrate = "*"
 python-dotenv = "*"
 flask-httpauth = "*"
 flask-moment = "*"
+flask-dropzone = "*"
+flask-ckeditor = "*"
+flask-avatars = "*"
 
 [requires]
 python_version = "3.7"

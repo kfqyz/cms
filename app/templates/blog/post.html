@@ -1,7 +1,7 @@
 {% extends "common/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "common/_macros.html" as macros %}
-
+{% block head %}{{ super() }}{{ ckeditor.load_code_theme() }}{% endblock %}
 {% block title %}{{ super() }}-- 文章{% endblock %}
 
 {% block page_content %}

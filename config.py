@@ -1,4 +1,5 @@
 import os
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -20,7 +21,12 @@ class Config:
     CMS_COMMENTS_PER_PAGE = 15
     CMS_SLOW_DB_QUERY_TIME = 0.5
 
-
+    CKEDITOR_SERVE_LOCAL = True
+    CKEDITOR_HEIGHT = 400
+    CKEDITOR_ENABLE_CODESNIPPET = True
+    CKEDITOR_FILE_UPLOADER = 'blog.upload'
+    # CKEDITOR_ENABLE_CSRF = True  # if you want to enable CSRF protect, uncomment this line
+    UPLOADED_PATH = os.path.join(basedir, 'app/uploads')
 
     @staticmethod
     def init_app(app):

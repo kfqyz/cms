@@ -10,7 +10,7 @@
     </div>
     {% if pagination %}
         <div class="pagination">
-            {{ macros.pagination_widget(pagination,'blog.category_post','',category.id) }}
+            {{ macros.pagination_widget(pagination,'blog.category_post',fragment='',c_id=category.id) }}
         </div>
     {% endif %}
 {% endblock %}

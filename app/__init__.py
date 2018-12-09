@@ -2,6 +2,7 @@ from flask import Flask
 from flask_admin import Admin
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
+from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
@@ -15,6 +16,7 @@ babel = Babel()
 moment = Moment()
 db = SQLAlchemy()
 admin = Admin()
+ckeditor = CKEditor()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -33,6 +35,7 @@ def create_app(config_name):
     babel.init_app(app)
     admin.init_app(app)
     login_manager.init_app(app)
+    ckeditor.init_app(app)
 
 
     from .blog import blog as blog_blueprint
