@@ -56,7 +56,7 @@
                                         src="https://s.gravatar.com/avatar/5cdb44cf2bf64a61abc23b7d8200007b?s=18">{{ current_user.username }}<b
                                         class="caret"></b>
                                 </a>
-                                <ul class="dropdown-menu"  style="min-width: 55px">
+                                <ul class="dropdown-menu" style="min-width: 55px">
                                     {{ nav_link('blog.user','个人中心',username=current_user.username) }}
                                     {{ nav_link('auth.change_password','修改密码') }}
                                     {{ nav_link('auth.change_email_request','修改邮箱') }}
@@ -82,7 +82,20 @@
                 {{ message }}
             </div>
         {% endfor %}
+
         {% block page_content %}{% endblock %}
+
+        {% block footer %}
+            <div class="container col-md-12">
+                <hr>
+                <p class="text-center">
+                    &copy; 2018
+                    <a href="#">在水一方</a> -
+                    <a href="https://github.com/kfqyz/cms" title="Fork me on GitHub">CMS</a> -
+                    记录与分享你的点点滴滴
+                </p>
+            </div>
+        {% endblock %}
     </div>
 {% endblock %}
 
@@ -96,3 +109,4 @@
     {{ moment.include_moment() }}
     {{ moment.locale('zh-cn') }}
 {% endblock %}
+

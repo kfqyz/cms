@@ -4,13 +4,16 @@
 {% block title %}{{ super() }} -- 首页{% endblock %}
 
 {% block page_content %}
-    <h3>你好,
-        {% if current_user.is_authenticated %}
-            {{ current_user.username }}
-        {% else %}
-            欢迎访问本站！
-        {% endif %}
-    </h3>
+    <div class="jumbotron">
+        <h3>你好,
+            {% if current_user.is_authenticated %}
+                {{ current_user.username }}
+            {% else %}
+                欢迎访问本站！
+            {% endif %}
+        </h3>
+        <p>这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。</p>
+    </div>
     <div class="post-tabs">
         <ul class="nav nav-tabs">
             <li{% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_all') }}">最新文章</a></li>
