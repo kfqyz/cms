@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_admin import Admin
+from flask_avatars import Avatars
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
@@ -17,6 +18,7 @@ moment = Moment()
 db = SQLAlchemy()
 admin = Admin()
 ckeditor = CKEditor()
+avatars = Avatars()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -36,7 +38,7 @@ def create_app(config_name):
     admin.init_app(app)
     login_manager.init_app(app)
     ckeditor.init_app(app)
-
+    avatars.init_app(app)
 
     from .blog import blog as blog_blueprint
     app.register_blueprint(blog_blueprint)

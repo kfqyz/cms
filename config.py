@@ -27,7 +27,10 @@ class Config:
     CKEDITOR_ENABLE_CODESNIPPET = True
     CKEDITOR_FILE_UPLOADER = 'blog.upload'
     # CKEDITOR_ENABLE_CSRF = True  # if you want to enable CSRF protect, uncomment this line
-    UPLOADED_PATH = os.path.join(basedir, 'app/static/uploads')
+    UPLOADED_PATH = os.path.join(basedir, 'app\\static\\uploads')
+    BLOG_PIC_PATH = os.path.join(UPLOADED_PATH, 'blog_pic')
+    AVATARS_SAVE_PATH = os.path.join(UPLOADED_PATH, 'avatars')
+    AVATARS_SIZE_TUPLE = (30, 100, 200)  # default:(30.60.150)
 
     @staticmethod
     def init_app(app):
@@ -36,7 +39,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost/cms?charset=utf8'
 
 
 class TestingConfig(Config):
@@ -45,7 +48,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost/cms?charset=utf8'
 
 
 config = {

@@ -5,7 +5,7 @@
 {% block page_content %}
     <div class="page-header">
         <img class="img-rounded profile-thumbnail"
-             src="https://s.gravatar.com/avatar/5cdb44cf2bf64a61abc23b7d8200007b?s=256">
+             src="{{ url_for('blog.get_avatar', filename=user.avatar_l) or avatars.default() }}">
         <div class="profile-header">
             <h3>{{ user.username }}</h3>
             {% if user == current_user %}

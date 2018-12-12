@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask import current_app, url_for
+from flask_avatars import Identicon
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import Column, Integer, ForeignKey, Boolean, String, Text, DateTime
@@ -18,13 +19,16 @@ class User(UserMixin, db.Model):
     id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True, index=True)
     email = Column(String(64), unique=True, index=True)
-    phone_number = Column(Integer, unique=True, index=True)
+    phone_number = Column(String(32), unique=True, index=True)
     password_hash = Column(String(128))
     role_id = Column(Integer, ForeignKey('roles.id'))
     confirmed = Column(Boolean, default=False)
     name = Column(String(64))
     location = Column(String(64))
     about_me = Column(Text())
+    avatar_s = Column(String(64))
+    avatar_m = Column(String(64))
+    avatar_l = Column(String(64))
     create_time = Column(DateTime, default=datetime.utcnow)
     last_seen = Column(DateTime(), default=datetime.utcnow)
     posts = relationship('Post', backref='author', lazy='dynamic')
@@ -36,6 +40,7 @@ class User(UserMixin, db.Model):
                              backref=backref('followed', lazy='joined'),
                              lazy='dynamic', cascade='all,delete-orphan')
     comments = relationship('Comment', backref='author', lazy='dynamic')
+
 
     @staticmethod
     def add_self_follows():
@@ -50,9 +55,18 @@ class User(UserMixin, db.Model):
         if self.role is None:
             if self.email == current_app.config['CMS_ADMIN']:
                 self.role = Role.query.filter_by(name='超级管理员').first()
-            if self.role is None:
+            else:
                 self.role = Role.query.filter_by(default=True).first()
         self.follow(self)
+        self.generate_avatar()
+
+    def generate_avatar(self):
+        avatar = Identicon()
+        filenames = avatar.generate(text=self.username)
+        self.avatar_s = filenames[0]
+        self.avatar_m = filenames[1]
+        self.avatar_l = filenames[2]
+        db.session.commit()
 
     @property
     def password(self):

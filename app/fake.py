@@ -1,7 +1,6 @@
 from random import randint, sample
 
 from faker import Faker
-from sqlalchemy.exc import IntegrityError
 
 from app import db
 from app.models.category import Category
@@ -55,7 +54,7 @@ def roles():
     db.session.commit()
 
 
-def users(count=50):
+def users(count=20):
     i = 0
     while i < count:
         u = User(email=fake.email(),
@@ -66,13 +65,11 @@ def users(count=50):
                  name=fake.name(),
                  location=fake.city(),
                  about_me=fake.text(20),
-                 create_time=fake.past_date())
+                 create_time=fake.past_date(),
+                 last_seen=fake.past_date())
         db.session.add(u)
-        try:
-            db.session.commit()
-            i += 1
-        except IntegrityError:
-            db.session.rollback()
+        i += 1
+    db.session.commit()
 
 
 def add_admin():
@@ -119,8 +116,7 @@ def comments():
     authors = User.query.all()
     for post in posts:
         for author in sample(authors, 5):
-            comment = Comment(body=fake.text(randint(10, 20)), post_id=post.id, author_id=author.id,
-                              replied=Comment.query.get(randint(1, Comment.query.count())))
+            comment = Comment(body=fake.text(20), post_id=post.id, author_id=author.id)
             db.session.add(comment)
     db.session.commit()
 

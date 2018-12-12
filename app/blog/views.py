@@ -68,6 +68,11 @@ def edit_profile():
     return render_template('blog/edit_profile.html', form=form)
 
 
+@blog.route('/avatars/<path:filename>')
+def get_avatar(filename):
+    return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
+
+
 # 管理员修改用户资料
 @blog.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -324,7 +329,10 @@ def moderate_disable(id):
 def category_post(c_id=1):
     page = request.args.get('page', 1, type=int)
     category = Category.query.get_or_404(c_id)
-    pagination = category.posts.order_by(Post.create_time.desc()).paginate(page, per_page=current_app.config[
+    # pagination = category.posts.order_by(Post.create_time.desc()).paginate(page, per_page=current_app.config[
+    #     'CMS_POSTS_PER_PAGE'], error_out=False)
+    pagination = Post.query.with_parent(category).order_by(Post.create_time.desc()).paginate(page, per_page=
+    current_app.config[
         'CMS_POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
     return render_template('blog/category_post.html', category=category, posts=posts, pagination=pagination)
@@ -332,7 +340,7 @@ def category_post(c_id=1):
 
 @blog.route('/files/<filename>')
 def uploaded_files(filename):
-    path = current_app.config['UPLOADED_PATH']
+    path = current_app.config['BLOG_PIC_PATH']
     return send_from_directory(path, filename)
 
 
@@ -342,6 +350,6 @@ def upload():
     extension = f.filename.split('.')[1].lower()
     if extension not in ['jpg', 'gif', 'png', 'jpeg']:
         return upload_fail(message='只能上传图片文件！')
-    f.save(os.path.join(current_app.config['UPLOADED_PATH'], f.filename))
+    f.save(os.path.join(current_app.config['BLOG_PIC_PATH'], f.filename))
     url = url_for('.uploaded_files', filename=f.filename)
     return upload_success(url=url)

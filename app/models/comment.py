@@ -14,6 +14,6 @@ class Comment(db.Model):
     create_time = Column(DateTime, default=datetime.utcnow, index=True)
     author_id = Column(Integer, ForeignKey('users.id'))
     post_id = Column(Integer, ForeignKey('posts.id'))
-    replied_id = Column(Integer, ForeignKey('comments.id'))
     replied = relationship('Comment', back_populates='replies', remote_side=[id])
     replies = relationship('Comment', back_populates='replied', cascade='all')
+    replied_id = Column(Integer, ForeignKey('comments.id'))
