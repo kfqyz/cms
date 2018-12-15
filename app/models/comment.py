@@ -17,3 +17,6 @@ class Comment(db.Model):
     replied = relationship('Comment', back_populates='replies', remote_side=[id])
     replies = relationship('Comment', back_populates='replied', cascade='all')
     replied_id = Column(Integer, ForeignKey('comments.id'))
+
+    def __repr__(self):
+        return 'Comment:{}'.format(self.id)

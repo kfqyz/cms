@@ -44,4 +44,4 @@ class Role(UserMixin, db.Model):
         return self.permissions & perm == perm
 
     def __repr__(self):
-        return self.name
+        return 'Role:{}-{}'.format(self.id, self.name)

@@ -72,7 +72,7 @@ def add_admin_views():
 
     class CommentView(MyModelView):
         column_searchable_list = ['body', 'author_id', 'post_id', 'disabled', 'create_time']
-        column_editable_list = ['body', 'disabled']
+        column_editable_list = ['body', 'disabled', 'replied', 'replies']
         column_labels = dict(body='内容', author='发表者', post='评论文章', disabled='禁止否', create_time='时间')
 
     class FollowView(MyModelView):

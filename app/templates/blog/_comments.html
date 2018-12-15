@@ -1,10 +1,10 @@
 <ul class="comments">
     {% for comment in comments %}
-        <li class="comment">
+        <li class="comments">
             <div class="comment-thumbnail">
                 <a href="{{ url_for('.user', username=comment.author.username) }}">
                     <img class="img-rounded profile-thumbnail"
-                         src="https://s.gravatar.com/avatar/5cdb44cf2bf64a61abc23b7d8200007b?s=40">
+                         src="{{ url_for('blog.get_avatar', filename=comment.author.avatar_s) or avatars.default() }}">
                 </a>
             </div>
             <div class="comment-content">
@@ -15,6 +15,18 @@
                 <div class="comment-body">
                     {% if moderate or not comment.disabled %}
                         {% if comment.body %}{{ comment.body }}{% endif %}
+                        <div class="comment-replies">
+                            {% if comment.replies %}
+                                <strong>回复({{ comment.replies | length }}条)：</strong>
+                                <ul class="list-group">
+                                    {% for reply in comment.replies %}
+                                        <li class="list-group-item"><a
+                                                href="{{ url_for('.user', username=reply.author.username) }}">{{ reply.author.username }}</a>: {{ reply.body }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
                 {% if moderate %}
@@ -27,8 +39,8 @@
                         </p>
                     {% else %}
                         <p class="text-right">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ url_for('.moderate_disable', id=comment.id, page=page) }}">禁止该评论</a>
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ url_for('.moderate_disable', id=comment.id, page=page) }}">禁止该评论</a>
                         </p>
                     {% endif %}
                 {% endif %}

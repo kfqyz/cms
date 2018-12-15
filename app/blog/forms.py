@@ -67,5 +67,5 @@ class PostForm(FlaskForm):
 
 # 提交评论
 class CommentForm(FlaskForm):
-    body = StringField('', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容'})
+    body = StringField('评论', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容'})
     submit = SubmitField('提 交')

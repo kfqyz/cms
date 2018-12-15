@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, DateTime
 
 from app import db
 
@@ -12,4 +12,4 @@ class Tag(db.Model):
     create_time = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return self.name
+        return 'Tag:{}-{}'.format(self.id, self.name)

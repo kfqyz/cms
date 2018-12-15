@@ -26,4 +26,4 @@ class Post(db.Model):
                         lazy='dynamic')
 
     def __repr__(self):
-        return self.title
+        return 'Post:{}-{}'.format(self.id, self.title)

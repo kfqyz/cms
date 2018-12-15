@@ -13,4 +13,4 @@ class Category(db.Model):
     create_time = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return '{} {}'.format(self.id, self.name)
+        return 'Category:{}-{}'.format(self.id, self.name)

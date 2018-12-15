@@ -73,7 +73,8 @@ def users(count=20):
 
 
 def add_admin():
-    admin = User(username='admin', email='admin@qq.com', phone_number=18999999999, password='asdf', role_id=3,
+    admin = User(username='admin', email='admin@qq.com', phone_number=18999999999, password='asdf',
+                 role=(Role.query.filter_by(name='超级管理员').first()),
                  confirmed=True)
     db.session.add(admin)
     db.session.commit()

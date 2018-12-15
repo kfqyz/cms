@@ -1,3 +1,4 @@
+
 .profile-thumbnail {
     position: absolute;
 }
@@ -45,8 +46,8 @@ div.post-thumbnail {
 }
 
 div.post-content {
-    margin-left: 48px;
-    min-height: 48px;
+    margin-left: 10px;
+    min-height: 10px;
 }
 
 div.post-footer {
@@ -56,7 +57,7 @@ div.post-footer {
 ul.comments {
     list-style-type: none;
     padding: 0px;
-    margin: 16px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 ul.comments li.comment {
@@ -91,7 +92,11 @@ div.comment-content {
 }
 
 div.comment-form {
-    margin: 16px 0px 16px 32px;
+    margin: 16px 10px;
+}
+
+div.comment-replies {
+    margin: 16px 16px;
 }
 
 div.pagination {
@@ -119,28 +124,13 @@ div.flask-pagedown-preview h3 {
     font-size: 120%;
 }
 
-.post-body h1 {
-    font-size: 140%;
-}
-
-.post-body h2 {
-    font-size: 130%;
-}
-
-.post-body h3 {
+.post-body {
     font-size: 120%;
 }
 
-.post-title h1 {
-    font-size: 140%;
-}
-
-.post-title h2 {
-    font-size: 130%;
-}
-
-.post-title h3 {
+.post-title {
     font-size: 120%;
+    text-align: center;
 }
 
 .table.followers tr {
