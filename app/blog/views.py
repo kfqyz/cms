@@ -34,6 +34,22 @@ def index():
     return render_template('index.html', posts=posts, show_followed=show_followed, pagination=pagination)
 
 
+# 文章列表
+@blog.route('/post_list')
+def post_list():
+    tag = Tag.query.filter_by(name=request.args.get('tag')).first()
+    category = Category.query.filter_by(name=request.args.get('category')).first()
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.with_parent(category or tag).order_by(Post.create_time.desc()).paginate(page,
+                                                                                                    per_page=
+                                                                                                    current_app.config[
+                                                                                                        'CMS_POSTS_PER_PAGE'],
+                                                                                                    error_out=False)
+    posts = pagination.items
+    return render_template('blog/post_list.html', category=category, tag=tag, posts=posts, show_followed=show_followed,
+                           pagination=pagination)
+
+
 # 用户页面
 @blog.route('/user/<username>')
 def user(username):

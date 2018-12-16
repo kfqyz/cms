@@ -50,6 +50,11 @@ div.post-content {
     min-height: 10px;
 }
 
+div.post-tag-category {
+    text-align: left;
+    text-indent: 2em;
+}
+
 div.post-footer {
     text-align: right;
 }
@@ -93,6 +98,7 @@ div.comment-content {
 
 div.comment-form {
     margin: 16px 10px;
+    font-size: 14px;
 }
 
 div.comment-replies {
@@ -126,6 +132,7 @@ div.flask-pagedown-preview h3 {
 
 .post-body {
     font-size: 120%;
+    text-indent: 2em;
 }
 
 .post-title {

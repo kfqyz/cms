@@ -10,11 +10,14 @@
 {% block page_content %}
     {% include 'blog/_post_details.html' %}
     <div class="social-share text-center">分享到：</div>
+    <hr>
     {% if current_user.can(Permission.COMMENT) %}
-        <div class="comment-form col-md-6">
-            {{ form.body.label }}
-            {{ form.body }}
-            {{ form.submit }}
+        <div class="comment-form">
+            <form method="post" class="form-inline">
+                <div class="form-group"> {{ form.body }}</div>
+                {{ form.csrf_token }}
+                <div class="form-group"> {{ form.submit }}</div>
+            </form>
         </div>
     {% endif %}
     {% include 'blog/_comments.html' %}
