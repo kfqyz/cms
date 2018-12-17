@@ -1,5 +1,6 @@
 <ul class="col-md-12 comments">
     {% for comment in comments %}
+        <hr style="margin:5px 0px">
         <li class="comments">
             <div class="comment-thumbnail">
                 <a href="{{ url_for('.user', username=comment.author.username) }}">
@@ -14,13 +15,13 @@
                 </div>
                 <div class="comment-body">
                     {% if moderate or not comment.disabled %}
-                        {% if comment.body %}{{ comment.body }}{% endif %}
+                        {% if comment.body %}{{ comment.body }}<a href="#"> 回复</a>{% endif %}
                         <div class="comment-replies">
                             {% if comment.replies %}
-                                <strong>回复({{ comment.replies | length }}条)：</strong>
-                                <ul class="list-group">
+                                <strong>&nbsp;&nbsp;回复({{ comment.replies | length }}条)：</strong>
+                                <ul class="list-unstyled">
                                     {% for reply in comment.replies %}
-                                        <li class="list-group-item"><a
+                                        <li><a
                                                 href="{{ url_for('.user', username=reply.author.username) }}">{{ reply.author.username }}</a>: {{ reply.body }}
                                         </li>
                                     {% endfor %}

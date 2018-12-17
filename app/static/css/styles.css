@@ -104,8 +104,14 @@ div.comment-form {
 div.comment-form
 
 div.comment-replies {
-    margin: 16px 16px;
+    margin: 0px 10px;
 }
+
+
+div.comment-replies ul li {
+    margin: 0px 16px;
+}
+
 
 div.pagination {
     width: 100%;
