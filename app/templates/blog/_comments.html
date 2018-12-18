@@ -13,13 +13,11 @@
                         href="{{ url_for('.user', username=comment.author.username) }}">{{ comment.author.username }}</a>
                 </div>
                 <div class="comment-body">
-                    {% if moderate or not comment.disabled %}
-                        {% if comment.body %}
-                            {{ comment.body }}
-                            {% if current_user.can(Permission.COMMENT) %}
-                                <span class="btn btn-link" replied_id="{{ comment.id }}"><i
-                                        class="glyphicon glyphicon-comment"></i> 回复</span>{% endif %}
-                        {% endif %}
+                    {% if comment.body %}
+                        {{ comment.body }}
+                        {% if current_user.can(Permission.COMMENT) %}
+                            <span class="btn btn-link" replied_id="{{ comment.id }}"><i
+                                    class="glyphicon glyphicon-comment"></i> 回复</span>{% endif %}
                         <div class="comment-replies">
                             {% if comment.replies %}
                                 <strong>&nbsp;&nbsp;回复({{ comment.replies | length }}条)：</strong>
@@ -36,21 +34,6 @@
                         </div>
                     {% endif %}
                 </div>
-                {% if moderate %}
-                    <br>
-                    {% if comment.disabled %}
-                        <p class="text-danger text-right">
-                            <i>该评论被管理员禁止</i>
-                            <a class="btn btn-primary btn-xs "
-                               href="{{ url_for('.moderate_enable', id=comment.id, page=page) }}">取消禁止</a>
-                        </p>
-                    {% else %}
-                        <p class="text-right">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ url_for('.moderate_disable', id=comment.id, page=page) }}">禁止该评论</a>
-                        </p>
-                    {% endif %}
-                {% endif %}
             </div>
         </li>
         <hr class="hr">
