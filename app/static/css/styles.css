@@ -115,7 +115,7 @@ div.comment-replies ul li {
 
 div.pagination {
     width: 100%;
-    text-align: right;
+    text-align: center;
     padding: 0px;
     margin: 0px;
 }
@@ -154,4 +154,8 @@ div.flask-pagedown-preview h3 {
 
 #comments {
     text-indent: 20px;
+}
+
+.hr {
+    margin: 5px 0px;
 }

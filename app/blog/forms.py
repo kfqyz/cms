@@ -2,7 +2,7 @@ from flask_ckeditor import CKEditorField
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, BooleanField, SelectField, \
-    SelectMultipleField
+    SelectMultipleField, HiddenField
 from wtforms.validators import DataRequired, Length, NumberRange, Email, Regexp, ValidationError
 
 # 用户修改个人资料
@@ -68,4 +68,5 @@ class PostForm(FlaskForm):
 # 提交评论
 class CommentForm(FlaskForm):
     body = TextAreaField('评论', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容', 'cols': '40'})
+    replied_id = HiddenField()
     submit = SubmitField('提 交')

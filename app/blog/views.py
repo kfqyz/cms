@@ -134,7 +134,11 @@ def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(body=form.body.data, post=post, author=current_user._get_current_object())
+        if form.replied_id.data:
+            comment = Comment(body=form.body.data, replied_id=form.replied_id.data,
+                              author=current_user._get_current_object())
+        else:
+            comment = Comment(body=form.body.data, post=post, author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
         flash('成功发表评论')
@@ -146,6 +150,18 @@ def post(id):
         'CMS_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
     return render_template('blog/post.html', post=post, form=form, comments=comments, pagination=pagination)
+
+
+# @blog.route('/comment_reply/<int:c_id>', methods=[ 'POST'])
+# @login_required
+# def comment_reply(c_id):
+#     if form.validate_on_submit():
+#         comment = Comment(body=form.body.data, replied_id=c_id, author=current_user._get_current_object())
+#         db.session.add(comment)
+#         db.session.commit()
+#         flash('成功发表评论')
+#         return redirect(url_for('.post', id=post.id, page=-1))
+#     return render_template('blog/post.html', post=post, form=form, comments=comments, pagination=pagination)
 
 
 # 修改文章

@@ -12,10 +12,11 @@
     <div class="social-share text-center">分享到：</div>
     <hr>
     {% if current_user.can(Permission.COMMENT) %}
-        <div class="comment-form">
+        <div class="comment-form" id="comment-form">
             <form method="post" class="form-inline">
                 <div class="form-group"> {{ form.body }}</div>
                 {{ form.csrf_token }}
+                {{ form.replied_id }}
                 <div class="form-group"> {{ form.submit }}</div>
             </form>
         </div>
@@ -30,4 +31,12 @@
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='share/dist/js/jquery.share.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("span.btn.btn-link").click(function () {
+                $("#comment-form").appendTo(this.parentElement);
+                $("#replied_id").val($(this).attr("replied_id"));
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,6 +1,5 @@
 <ul class="col-md-12 comments">
     {% for comment in comments %}
-        <hr style="margin:5px 0px">
         <li class="comments">
             <div class="comment-thumbnail">
                 <a href="{{ url_for('.user', username=comment.author.username) }}">
@@ -15,20 +14,26 @@
                 </div>
                 <div class="comment-body">
                     {% if moderate or not comment.disabled %}
-                        {% if comment.body %}{{ comment.body }}<a href="#"> 回复</a>{% endif %}
+                        {% if comment.body %}
+                            {{ comment.body }}
+                            {% if current_user.can(Permission.COMMENT) %}
+                                <span class="btn btn-link" replied_id="{{ comment.id }}"><i
+                                        class="glyphicon glyphicon-comment"></i> 回复</span>{% endif %}
+                        {% endif %}
                         <div class="comment-replies">
                             {% if comment.replies %}
                                 <strong>&nbsp;&nbsp;回复({{ comment.replies | length }}条)：</strong>
                                 <ul class="list-unstyled">
                                     {% for reply in comment.replies %}
-                                        <li><a
-                                                href="{{ url_for('.user', username=reply.author.username) }}">{{ reply.author.username }}</a>: {{ reply.body }}
-                                        </li>
+                                        {% if not reply.disabled %}
+                                            <li>
+                                                <a href="{{ url_for('.user', username=reply.author.username) }}">{{ reply.author.username }}</a>: {{ reply.body }}
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>
                             {% endif %}
                         </div>
-
                     {% endif %}
                 </div>
                 {% if moderate %}
@@ -48,5 +53,6 @@
                 {% endif %}
             </div>
         </li>
+        <hr class="hr">
     {% endfor %}
 </ul>
