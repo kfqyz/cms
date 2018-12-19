@@ -137,12 +137,14 @@ def post(id):
         if form.replied_id.data:
             comment = Comment(body=form.body.data, replied_id=form.replied_id.data,
                               author=current_user._get_current_object())
+            page = request.args.get('page', 1, type=int)
         else:
             comment = Comment(body=form.body.data, post=post, author=current_user._get_current_object())
+            page = 1
         db.session.add(comment)
         db.session.commit()
         flash('成功发表评论')
-        return redirect(url_for('.post', id=post.id, page=-1))
+        return redirect(url_for('.post', id=post.id, page=page))
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) // current_app.config['CMS_COMMENTS_PER_PAGE'] + 1
