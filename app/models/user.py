@@ -4,8 +4,8 @@ from flask import current_app, url_for
 from flask_avatars import Identicon
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from sqlalchemy import Column, Integer, ForeignKey, Boolean, String, Text, DateTime
-from sqlalchemy.orm import relationship, backref
+# from sqlalchemy import Column, db.Integer, db.ForeignKey, db.Boolean, String, db.Text, DateTime
+# from sqlalchemy.orm import db.relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import login_manager, db
@@ -16,31 +16,30 @@ from app.models.role import Role, Permission
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(64), unique=True, index=True)
-    email = Column(String(64), unique=True, index=True)
-    phone_number = Column(String(32), unique=True, index=True)
-    password_hash = Column(String(128))
-    role_id = Column(Integer, ForeignKey('roles.id'))
-    confirmed = Column(Boolean, default=False)
-    name = Column(String(64))
-    location = Column(String(64))
-    about_me = Column(Text())
-    avatar_s = Column(String(64))
-    avatar_m = Column(String(64))
-    avatar_l = Column(String(64))
-    create_time = Column(DateTime, default=datetime.utcnow)
-    last_seen = Column(DateTime(), default=datetime.utcnow)
-    posts = relationship('Post', backref='author', lazy='dynamic')
-    categorys = relationship('Category', backref='user', lazy='dynamic')
-    followed = relationship('Follow', foreign_keys=[Follow.follower_id],
-                            backref=backref('follower', lazy='joined'),
-                            lazy='dynamic', cascade='all,delete-orphan')
-    followers = relationship('Follow', foreign_keys=[Follow.followed_id],
-                             backref=backref('followed', lazy='joined'),
-                             lazy='dynamic', cascade='all,delete-orphan')
-    comments = relationship('Comment', backref='author', lazy='dynamic')
-
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(64), unique=True, index=True)
+    phone_number = db.Column(db.String(32), unique=True, index=True)
+    password_hash = db.Column(db.String(128))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    confirmed = db.Column(db.Boolean, default=False)
+    name = db.Column(db.String(64))
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    avatar_s = db.Column(db.String(64))
+    avatar_m = db.Column(db.String(64))
+    avatar_l = db.Column(db.String(64))
+    create_time = db.Column(db.DateTime, default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    categorys = db.relationship('Category', backref='user', lazy='dynamic')
+    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],
+                               backref=db.backref('follower', lazy='joined'),
+                               lazy='dynamic', cascade='all,delete-orphan')
+    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic', cascade='all,delete-orphan')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     @staticmethod
     def add_self_follows():

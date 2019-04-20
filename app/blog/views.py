@@ -262,7 +262,7 @@ def followers(username):
     page = request.args.get('page', 1, int)
     pagination = user.followers.paginate(page, per_page=current_app.config['CMS_FOLLOWERS_PER_PAGE'], error_out=False)
     follows = [{'user': item.follower, 'create_time': item.create_time} for item in pagination.items]
-    return render_template('blog/followers.html', user=user, title='Followers of', endpoint='.followers',
+    return render_template('blog/followers.html', user=user, title='粉丝列表', endpoint='.followers',
                            pagination=pagination, follows=follows)
 
 

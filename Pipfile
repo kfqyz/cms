@@ -1,7 +1,7 @@
 [[source]]
 name = "pypi"
-url = "https://mirrors.aliyun.com/pypi/simple"
-verify_ssl = true
+url = "http://pypi.douban.com/simple"
+verify_ssl = false
 
 [dev-packages]
 watchdog = "*"
@@ -23,7 +23,15 @@ flask-dropzone = "*"
 flask-ckeditor = "*"
 flask-avatars = "*"
 flask-bootstrap = "*"
-pymysql = "*"
+jinja2 = "*"
+faker = "*"
+werkzeug = "*"
+mako = "*"
+alembic = "*"
+sqlalchemy = "*"
+cryptography = "*"
+cffi = "*"
+mysql-connector = "*"
 
 [requires]
 python_version = "3.7"

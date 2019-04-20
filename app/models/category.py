@@ -1,16 +1,17 @@
 from datetime import datetime
 
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
-
 from app import db
+
+
+# from sqlalchemy import Column, String, db.Integer, db.ForeignKey, DateTime
 
 
 class Category(db.Model):
     __tablename__ = 'categorys'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(64), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    create_time = Column(DateTime, default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    create_time = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return 'Category:{}-{}'.format(self.id, self.name)

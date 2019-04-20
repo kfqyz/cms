@@ -1,22 +1,23 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, Text, Boolean, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
-
 from app import db
+
+
+# from sqlalchemy import Column, db.Integer, db.Text, db.Boolean, db.ForeignKey, DateTime
+# from sqlalchemy.orm import db.relationship
 
 
 class Comment(db.Model):
     __tablename__ = 'comments'
-    id = Column(Integer, primary_key=True)
-    body = Column(Text)
-    disabled = Column(Boolean, default=False)
-    create_time = Column(DateTime, default=datetime.utcnow, index=True)
-    author_id = Column(Integer, ForeignKey('users.id'))
-    post_id = Column(Integer, ForeignKey('posts.id'))
-    replied = relationship('Comment', back_populates='replies', remote_side=[id])
-    replies = relationship('Comment', back_populates='replied', cascade='all')
-    replied_id = Column(Integer, ForeignKey('comments.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    disabled = db.Column(db.Boolean, default=False)
+    create_time = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
+    replies = db.relationship('Comment', back_populates='replied', cascade='all')
+    replied_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
 
     def __repr__(self):
         return 'Comment:{}'.format(self.id)

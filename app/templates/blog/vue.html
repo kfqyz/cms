@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input v-model:value="input_item">
+    <button @click="submit">提交</button>
+    <itemtab
+            v-for="(item,index) in items"
+            :key=index
+            :index=index
+            :content=item
+            @del='handleDelete'
+    ></itemtab>
+</div>
+<script>
+    Vue.component('itemtab', {
+        props: ['index', 'content'],
+        template: "<li @click='del'>{{index}}--{{content}}</li>",
+        methods: {
+            del: function () {
+                this.$emit('del', this.index)
+            }
+        }
+    })
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            input_item: 'asdfasdf',
+            items: []
+        },
+        methods: {
+            submit: function () {
+                this.items.push(this.input_item)
+            },
+            handleDelete: function (index) {
+                this.items.splice(index, 1)
+            }
+        }
+    })
+</script>
+</body>
+</html>
