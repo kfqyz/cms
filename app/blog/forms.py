@@ -39,15 +39,15 @@ class EditProfileAdminForm(FlaskForm):
 
     def validate_email(self, field):
         if field.data != self.user.email and User.query.filter_by(email=field.data).first():
-            raise ValidationError('该邮箱已经注册了。')
+            raise ValidationError('该邮箱已经注册了')
 
     def validate_username(self, field):
         if field.data != self.user.username and User.query.filter_by(username=field.data).first():
-            raise ValidationError('该用户名已经注册了。')
+            raise ValidationError('该用户名已经注册了')
 
     def validate_phone_number(self, field):
         if field.data != self.user.phone_number and User.query.filter_by(phone_number=field.data).first():
-            raise ValidationError('该手机号已经注册了。')
+            raise ValidationError('该手机号已经注册了')
 
 
 # 发布、修改文章

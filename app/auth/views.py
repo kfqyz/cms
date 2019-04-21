@@ -21,14 +21,24 @@ def before_request():
             return redirect(url_for('auth.unconfirmed'))
 
 
-# 未验证用户
-@auth.route('/unconfirmed')
-def unconfirmed():
-    if current_user.is_anonymous or current_user.confirmed:
-        return redirect(url_for('blog.index'))
-    return render_template('auth/unconfirmed.html')
+# 注册
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data,
+                    username=form.username.data, phone_number=form.phone_number.data,
+                    password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        token = user.generate_confirmation_token()
+        send_email(user.email, '验证你的账号', 'auth/email/confirm', user=user, token=token)
+        flash('验证邮件已经发到你的邮箱')
+        return redirect(url_for('auth.login'))
+    return render_template('auth/register.html', form=form)
 
 
+# 登录页面
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -46,6 +56,7 @@ def login():
     return render_template('auth/login.html', form=form)
 
 
+# 登出
 @auth.route('/logout')
 @login_required
 def logout():
@@ -54,22 +65,18 @@ def logout():
     return redirect(url_for('blog.index'))
 
 
-@auth.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(email=form.email.data,
-                    username=form.username.data, phone_number=form.phone_number.data,
-                    password=form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        token = user.generate_confirmation_token()
-        send_email(user.email, '验证你的账号', 'auth/email/confirm', user=user, token=token)
-        flash('验证邮件已经发到你的邮箱。')
-        return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', form=form)
+# 发送验证邮件
+@auth.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email(current_user.email, '账号验证',
+               'auth/email/confirm', user=current_user, token=token)
+    flash('新的验证邮件已经发到你的邮箱，请查收。')
+    return redirect(url_for('blog.index'))
 
 
+# 验证用户
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
@@ -83,16 +90,15 @@ def confirm(token):
     return redirect(url_for('blog.index'))
 
 
-@auth.route('/confirm')
-@login_required
-def resend_confirmation():
-    token = current_user.generate_confirmation_token()
-    send_email(current_user.email, '账号验证',
-               'auth/email/confirm', user=current_user, token=token)
-    flash('新的验证邮件已经发到你的邮箱，请查收。')
-    return redirect(url_for('blog.index'))
+# 未验证用户
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('blog.index'))
+    return render_template('auth/unconfirmed.html')
 
 
+# 修改密码
 @auth.route('/change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():
@@ -109,6 +115,7 @@ def change_password():
     return render_template("auth/change_password.html", form=form)
 
 
+# 忘记密码，请求重置
 @auth.route('/reset', methods=['GET', 'POST'])
 def password_reset_request():
     if not current_user.is_anonymous:
@@ -126,6 +133,7 @@ def password_reset_request():
     return render_template('auth/reset_password.html', form=form)
 
 
+# 重置密码
 @auth.route('/reset/<token>', methods=['GET', 'POST'])
 def password_reset(token):
     if not current_user.is_anonymous:
@@ -141,6 +149,7 @@ def password_reset(token):
     return render_template('auth/reset_password.html', form=form)
 
 
+# 请求修改邮箱
 @auth.route('/change_email', methods=['GET', 'POST'])
 @login_required
 def change_email_request():
@@ -159,6 +168,7 @@ def change_email_request():
     return render_template("auth/change_email.html", form=form)
 
 
+# 修改邮箱
 @auth.route('/change_email/<token>')
 @login_required
 def change_email(token):

@@ -83,7 +83,7 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.add(current_user._get_current_object())
         db.session.commit()
-        flash('你已经成功更新个人资料。')
+        flash('你已经成功更新个人资料')
         return redirect(url_for('.user', username=current_user.username))
     form.name.data = current_user.name
     form.phone_number.data = current_user.phone_number
@@ -115,7 +115,7 @@ def edit_profile_admin(id):
         user.about_me = form.about_me.data
         db.session.add(user)
         db.session.commit()
-        flash('你已经成功更新个人资料。')
+        flash('你已经成功更新个人资料')
         return redirect(url_for('.user', username=user.username))
     form.email.data = user.email
     form.username.data = user.username
@@ -151,7 +151,8 @@ def post(id):
     pagination = post.comments.filter(Comment.disabled != True).order_by(Comment.create_time.desc()).paginate(page,
                                                                                                               per_page=
                                                                                                               current_app.config[
-        'CMS_COMMENTS_PER_PAGE'], error_out=False)
+                                                                                                                  'CMS_COMMENTS_PER_PAGE'],
+                                                                                                              error_out=False)
     comments = pagination.items
     return render_template('blog/post.html', post=post, form=form, comments=comments, pagination=pagination)
 
@@ -222,13 +223,13 @@ def new_post():
 def delete_post(id):
     post = Post.query.filter_by(id=id).first()
     if not post:
-        flash('要删除的文章不存在。')
+        flash('要删除的文章不存在')
         return redirect(url_for('.index'))
     user = User.query.filter_by(id=post.author_id).first()
     if current_user.id == user.id or current_user.is_administrator():
         db.session.delete(post)
         db.session.commit()
-        flash('文章删除成功。')
+        flash('文章删除成功')
         return redirect(url_for('.index'))
     flash('你没删除的权限')
     return redirect(url_for('.index'))
