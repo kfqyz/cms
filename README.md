@@ -12,4 +12,5 @@ FLASK_APP MAIL_USERNAME MAIL_PASSWORD CMS_ADMIN SECRET_KEY……等
 2.后台管理使用Flask-admin 访问：http://localhost:5000/admin
 3.提示，错误反馈中文化
 4.增加了文章分类，文章标签
+5.增加评论及对评论的回复
 
