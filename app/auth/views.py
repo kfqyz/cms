@@ -21,7 +21,7 @@ def before_request():
             return redirect(url_for('auth.unconfirmed'))
 
 
-# 未验证用户view
+# 未验证用户
 @auth.route('/unconfirmed')
 def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:

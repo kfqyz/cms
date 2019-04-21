@@ -1,10 +1,5 @@
-SECRET_KEY = 'hello'
-CMS_ADMIN='kfqyz@sina.com'
 FLASK_APP = 'cms'
 FLASK_ENV = 'development'
 FLASK_RUN_HOST = '0.0.0.0'
 FLASK_RUN_PORT = '5000'
-MAIL_SERVER='smtp.sina.com'
-MAIL_USERNAME='kfqyz@sina.com'
-MAIL_USE_SSL=True
-MAIL_PORT=465
+
