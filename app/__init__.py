@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from flask_whooshee import Whooshee
 
 from config import config
 
@@ -19,6 +20,7 @@ db = SQLAlchemy()
 admin = Admin()
 ckeditor = CKEditor()
 avatars = Avatars()
+whooshee = Whooshee()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -39,6 +41,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     ckeditor.init_app(app)
     avatars.init_app(app)
+    whooshee.init_app(app)
 
     from .blog import blog as blog_blueprint
     app.register_blueprint(blog_blueprint)

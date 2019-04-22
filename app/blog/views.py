@@ -17,6 +17,7 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
 from ..decorators import admin_required, permission_required
 
 
+# 网站首页
 @blog.route('/')
 def index():
     page = request.args.get('page', 1, type=int)
@@ -31,7 +32,10 @@ def index():
                                                                   per_page=current_app.config['CMS_POSTS_PER_PAGE'],
                                                                   error_out=False)
     posts = pagination.items
-    return render_template('index.html', posts=posts, show_followed=show_followed, pagination=pagination)
+    tags = Tag.query.order_by(Tag.create_time.desc()).limit(10).all()
+    categorys = Category.query.order_by(Category.create_time.desc()).limit(10).all()
+    return render_template('index.html', posts=posts, show_followed=show_followed, pagination=pagination, tags=tags,
+                           categorys=categorys)
 
 
 # 文章列表
@@ -193,7 +197,7 @@ def edit_post(id):
     return render_template('blog/edit_post.html', form=form)
 
 
-# 新建文章
+# 发表新文章
 @blog.route('/new_post', methods=['GET', 'POST'])
 @login_required
 def new_post():

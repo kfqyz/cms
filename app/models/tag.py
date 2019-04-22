@@ -1,11 +1,12 @@
 from datetime import datetime
 
-from app import db
+from app import db, whooshee
 
 
 # from sqlalchemy import Column, String, db.Integer, DateTime
 
 
+@whooshee.register_model('name')
 class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)

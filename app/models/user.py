@@ -8,12 +8,13 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 # from sqlalchemy.orm import db.relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import login_manager, db
+from app import login_manager, db, whooshee
 from app.models.follow import Follow
 from app.models.post import Post
 from app.models.role import Role, Permission
 
 
+@whooshee.register_model('username')
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)

@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from app import db
+from app import db, whooshee
 
 
 # from sqlalchemy import Column, String, db.Integer, db.ForeignKey, DateTime
 
-
+@whooshee.register_model('name')
 class Category(db.Model):
     __tablename__ = 'categorys'
     id = db.Column(db.Integer, primary_key=True)

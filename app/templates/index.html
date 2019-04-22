@@ -14,7 +14,7 @@
         </h3>
         <p>这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。这是一个内容管理系统，欢迎使用。</p>
     </div>
-    <div class="post-tabs col-md-8 col-sm-12">
+    <div class="post-tabs col-md-6 col-sm-12">
         <ul class="nav nav-tabs">
             <li{% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_all') }}">最新文章</a></li>
             {% if current_user.is_authenticated %}
@@ -23,13 +23,54 @@
             {% endif %}
         </ul>
         {% include 'blog/_posts_list.html' %}
-    {% if pagination %}
-        <div class="pagination">
-            {{ macros.pagination_widget(pagination,'.index') }}
-        </div>
-    {% endif %}
+        {% if pagination %}
+            <div class="pagination">
+                {{ macros.pagination_widget(pagination,'.index') }}
+            </div>
+        {% endif %}
     </div>
-    <div class="col-md-4 col-sm-12">
-        <p>asdfasdfadsf</p>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">热门分类</div>
+            {#            <div class="panel-body">#}
+            {#                <p>...</p>#}
+            {#            </div>#}
+            <!-- List group -->
+
+            <ul class="list-group">
+                {% for category in categorys %}
+                    <a href="{{ url_for('.post_list',category=category.name) }}">
+                        <li class="list-group-item">
+                            {{ category.name }}
+                            <span class="badge">455</span>
+                        </li>
+                    </a>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">热门标签</div>
+            {#            <div class="panel-body">#}
+            {#                <p>...</p>#}
+            {#            </div>#}
+            <!-- List group -->
+            <ul class="list-group">
+                {% for tag in tags %}
+                    <a href="{{ url_for('.post_list',tag=tag.name) }}">
+                        <li class="list-group-item">
+                            {{ tag.name }}
+                            <span class="badge">455</span>
+                        </li>
+                    </a>
+                {% endfor %}
+            </ul>
+
+        </div>
     </div>
 {% endblock %}

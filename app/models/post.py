@@ -1,9 +1,6 @@
 from datetime import datetime
 
-from app import db
-
-# from sqlalchemy import Column, db.Integer, db.ForeignKey, String, db.Text, DateTime
-# from sqlalchemy.orm import db.relationship, backref
+from app import db, whooshee
 
 post_categorys = db.Table('post_categorys', db.Column('category_id', db.Integer, db.ForeignKey('categorys.id')),
                           db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
@@ -12,6 +9,7 @@ post_tags = db.Table('post_tags', db.Column('tag_id', db.Integer, db.ForeignKey(
                      db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
 
 
+@whooshee.register_model('title', 'body')
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)

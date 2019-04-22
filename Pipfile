@@ -32,6 +32,7 @@ sqlalchemy = "*"
 cryptography = "*"
 cffi = "*"
 mysql-connector = "*"
+flask-whooshee = "*"
 
 [requires]
 python_version = "3.7"

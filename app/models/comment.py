@@ -1,12 +1,13 @@
 from datetime import datetime
 
-from app import db
+from app import db, whooshee
 
 
 # from sqlalchemy import Column, db.Integer, db.Text, db.Boolean, db.ForeignKey, DateTime
 # from sqlalchemy.orm import db.relationship
 
 
+@whooshee.register_model('body')
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
