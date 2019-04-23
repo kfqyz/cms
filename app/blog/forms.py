@@ -70,3 +70,9 @@ class CommentForm(FlaskForm):
     body = TextAreaField('评论', validators=[DataRequired()], render_kw={'placeholder': '输入评论内容', 'cols': '40'})
     replied_id = HiddenField()
     submit = SubmitField('提 交')
+
+
+# # 搜索表单
+# class SearchForm(FlaskForm):
+#     search_text= StringField('', validators=[DataRequired()])
+#     submit = SubmitField('搜索')

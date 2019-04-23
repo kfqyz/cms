@@ -12,7 +12,7 @@ from app.models.role import Role
 from app.models.tag import Tag
 from app.models.user import User
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_ENV') or 'default')
 migrate = Migrate(app, db)
 
 

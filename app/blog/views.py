@@ -375,12 +375,14 @@ def category_post(c_id=1):
     return render_template('blog/category_post.html', category=category, posts=posts, pagination=pagination)
 
 
+# 博客文件上传
 @blog.route('/files/<filename>')
 def uploaded_files(filename):
     path = current_app.config['BLOG_PIC_PATH']
     return send_from_directory(path, filename)
 
 
+# 博客文件上传
 @blog.route('/upload', methods=['POST'])
 def upload():
     f = request.files.get('upload')
@@ -390,3 +392,15 @@ def upload():
     f.save(os.path.join(current_app.config['BLOG_PIC_PATH'], f.filename))
     url = url_for('.uploaded_files', filename=f.filename)
     return upload_success(url=url)
+
+
+# 搜索结果页面
+@blog.route('/search')
+def search():
+    search_text = request.args.get('search_text')
+    search_words_list = search_text.split(' ')
+    for word in search_words_list:
+        search_posts = search_posts + Post.query.whooshee_search(word).all()
+        search_users = search_users + User.query.whooshee_search(word).all()
+        search_tags = search_tags + Tag.query.whooshee_search(word).all()
+        search_categorys = search_categorys + Category.query.whooshee_search(word).all()
