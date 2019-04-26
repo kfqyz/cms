@@ -91,12 +91,10 @@ def categorys():
 
 def tags():
     posts = Post.query.all()
-    for i in range(4):
-        for post in posts:
-            name = fake.text(6).replace('.', '')
-            if name not in [tag.name for tag in Tag.query.all()]:
-                t = Tag(name=name, posts=[post])
-                db.session.add(t)
+    for post in posts:
+        name = fake.text(6).replace('.', '')
+        t = Tag(name=name, posts=[post])
+        db.session.add(t)
     db.session.commit()
 
 

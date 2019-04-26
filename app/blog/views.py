@@ -398,9 +398,12 @@ def upload():
 @blog.route('/search')
 def search():
     search_text = request.args.get('search_text')
-    search_words_list = search_text.split(' ')
-    for word in search_words_list:
-        search_posts = search_posts + Post.query.whooshee_search(word).all()
-        search_users = search_users + User.query.whooshee_search(word).all()
-        search_tags = search_tags + Tag.query.whooshee_search(word).all()
-        search_categorys = search_categorys + Category.query.whooshee_search(word).all()
+    if not search_text:
+        redirect(url_for('.index'))
+    search_words_list = search_text.split('+')
+    search_posts = [Post.query.whooshee_search(word).all() for word in search_words_list]
+    search_tags = [Tag.query.whooshee_search(word).all() for word in search_words_list]
+    search_users = [User.query.whooshee_search(word).all() for word in search_words_list]
+    search_categorys = [Category.query.whooshee_search(word).all() for word in search_words_list]
+    return render_template('blog/search.html', search_categorys=search_categorys, search_users=search_users,
+                           search_tags=search_tags, posts=search_posts[0], search_words_list=search_words_list)
