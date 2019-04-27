@@ -19,7 +19,7 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic', cascade='all')
     categorys = db.relationship('Category', secondary=post_categorys, backref=db.backref('posts', lazy='dynamic'),
-                             lazy='dynamic')
+                                lazy='dynamic')
     tags = db.relationship('Tag', secondary=post_tags, backref=db.backref('posts', lazy='dynamic'),
                            lazy='dynamic')
 

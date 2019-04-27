@@ -369,8 +369,7 @@ def category_post(c_id=1):
     # pagination = category.posts.order_by(Post.create_time.desc()).paginate(page, per_page=current_app.config[
     #     'CMS_POSTS_PER_PAGE'], error_out=False)
     pagination = Post.query.with_parent(category).order_by(Post.create_time.desc()).paginate(page, per_page=
-    current_app.config[
-        'CMS_POSTS_PER_PAGE'], error_out=False)
+    current_app.config['CMS_POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
     return render_template('blog/category_post.html', category=category, posts=posts, pagination=pagination)
 
@@ -396,14 +395,28 @@ def upload():
 
 # 搜索结果页面
 @blog.route('/search')
+@login_required
 def search():
-    search_text = request.args.get('search_text')
-    if not search_text:
-        redirect(url_for('.index'))
-    search_words_list = search_text.split('+')
-    search_posts = [Post.query.whooshee_search(word).all() for word in search_words_list]
-    search_tags = [Tag.query.whooshee_search(word).all() for word in search_words_list]
-    search_users = [User.query.whooshee_search(word).all() for word in search_words_list]
-    search_categorys = [Category.query.whooshee_search(word).all() for word in search_words_list]
-    return render_template('blog/search.html', search_categorys=search_categorys, search_users=search_users,
-                           search_tags=search_tags, posts=search_posts[0], search_words_list=search_words_list)
+    search_text = request.args.get('search_text') or ''
+    if search_text == '':
+        flash('请输入搜索关键词，多个可用空格隔开')
+        return redirect(request.args.get(next) or request.referrer or url_for('.index'))
+    page = request.args.get('page', 1, type=int)
+    posts_pagination = Post.query.whooshee_search(search_text).order_by(Post.create_time.desc()).paginate(page,
+                                                                                                          per_page=
+                                                                                                          current_app.config[
+                                                                                                              'CMS_POSTS_PER_PAGE'],
+                                                                                                          error_out=False)
+    posts = posts_pagination.items
+    tags_pagination = Tag.query.whooshee_search(search_text).paginate(page, per_page=current_app.config[
+        'CMS_POSTS_PER_PAGE'], error_out=False)
+    tags = tags_pagination.items
+    users_pagination = User.query.whooshee_search(search_text).paginate(page, per_page=current_app.config[
+        'CMS_POSTS_PER_PAGE'], error_out=False)
+    users = users_pagination.items
+    categorys_pagination = Category.query.whooshee_search(search_text).paginate(page, per_page=current_app.config[
+        'CMS_POSTS_PER_PAGE'], error_out=False)
+    categorys = categorys_pagination.items
+    return render_template('blog/search.html', posts=posts, categorys=categorys, users=users, tags=tags,
+                           posts_pagination=posts_pagination, categorys_pagination=categorys_pagination,
+                           users_pagination=users_pagination, tags_pagination=tags_pagination, search_text=search_text)
