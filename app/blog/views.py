@@ -14,7 +14,7 @@ from app.models.tag import Tag
 from app.models.user import User
 from . import blog
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm, CommentForm
-from ..decorators import admin_required, permission_required
+from ..common import admin_required, permission_required, redirect_back
 
 
 # 网站首页
@@ -401,7 +401,7 @@ def search():
     search_text = request.args.get('search_text') or ''
     if search_text == '':
         flash('请输入搜索关键词，多个可用空格隔开')
-        return redirect(request.args.get('next') or request.referrer or url_for('blog.index'))
+        return redirect_back()
     page = request.args.get('page', 1, type=int)
     posts_pagination = Post.query.whooshee_search(search_text).order_by(Post.create_time.desc()).paginate(page,
                                                                                                           per_page=
