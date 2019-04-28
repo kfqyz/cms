@@ -48,7 +48,7 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         {% if current_user.can(Permission.MODERATE) %}
-                            {{ nav_link('admin.index','管理后台') }}
+                            {{ nav_link('admin.home','管理后台') }}
                         {% endif %}
                         {% if current_user.is_authenticated %}
                             <li class="dropdown">

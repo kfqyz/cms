@@ -325,6 +325,7 @@ def show_followed():
     return resp
 
 
+#
 # # 管理评论
 # @blog.route('/moderate')
 # @login_required
@@ -359,7 +360,7 @@ def show_followed():
 #     db.session.add(comment)
 #     db.session.commit()
 #     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
-
+#
 
 # 文章分类列表
 @blog.route('/category/<int:c_id>')

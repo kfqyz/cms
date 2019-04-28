@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_admin import Admin
+# from flask_admin import Admin
 from flask_avatars import Avatars
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
@@ -17,7 +17,7 @@ mail = Mail()
 babel = Babel()
 moment = Moment()
 db = SQLAlchemy()
-admin = Admin()
+# admin = Admin()
 ckeditor = CKEditor()
 avatars = Avatars()
 whooshee = Whooshee()
@@ -37,7 +37,7 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
     babel.init_app(app)
-    admin.init_app(app)
+    # admin.init_app(app)
     login_manager.init_app(app)
     ckeditor.init_app(app)
     avatars.init_app(app)
@@ -52,8 +52,11 @@ def create_app(config_name):
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
-    from .admin_views import add_admin_views
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
-    add_admin_views()
+    # from .admin_views import add_admin_views
+
+    # add_admin_views()
 
     return app
