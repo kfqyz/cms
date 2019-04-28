@@ -10,68 +10,81 @@
 {% block page_content %}
     <div>
         <h3 align="center">搜索“{{ search_text }}”结果</h3>
-        <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="#">文章({{ posts | length }})</a></li>
-            <li role="presentation"><a href="#">标签({{ tags | length }})</a></li>
-            <li role="presentation"><a href="#">分类({{ categorys | length }})</a></li>
-            <li role="presentation"><a href="#">用户({{ users | length }})</a></li>
+    </div>
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#post" aria-controls="post" role="tab"
+                                                      data-toggle="tab">文章({{ posts | length }})</a></li>
+            <li role="presentation"><a href="#tag" aria-controls="tag" role="tab"
+                                       data-toggle="tab">标签({{ tags | length }})</a></li>
+            <li role="presentation"><a href="#category" aria-controls="category" role="tab"
+                                       data-toggle="tab">分类({{ categorys | length }})</a></li>
+            <li role="presentation"><a href="#user" aria-controls="user" role="tab"
+                                       data-toggle="tab">用户({{ users | length }})</a></li>
         </ul>
-        <h5>搜索到的文章</h5>
-        {% include 'blog/_posts_list.html' %}
-        {% if posts_pagination %}
-            <div class="pagination">
-                {{ macros.pagination_widget(posts_pagination,'blog.search',search_text=search_text) }}
-            </div>
-        {% endif %}
-
-        <h5>搜索到的标签</h5>
-        <ul class="posts">
-            {% for tag in tags %}
-                <li class="post">
-                    <div>&nbsp;&nbsp;
-                        <a href="{{ url_for('blog.post_list',tag=tag.name) }}">{{ tag.name }}</a>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="post">
+                <h5>搜索到<strong>{{ posts | length }}</strong>篇文章</h5>
+                {% include 'blog/_posts_list.html' %}
+                {% if posts_pagination %}
+                    <div class="pagination">
+                        {{ macros.pagination_widget(posts_pagination,'blog.search',search_text=search_text) }}
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
-
-        {% if tags_pagination %}
-            <div class="pagination">
-                {{ macros.pagination_widget(tags_pagination,'blog.search',search_text=search_text) }}
+                {% endif %}
             </div>
-        {% endif %}
-
-        <h5>搜索到的分类</h5>
-        <ul class="posts">
-            {% for category in categorys %}
-                <li class="post">
-                    <div>&nbsp;&nbsp;
-                        <a href="{{ url_for('blog.post_list',category=category.name) }}">{{ category.name }}</a>
+            <div role="tabpanel" class="tab-pane" id="tag">
+                <h5>搜索到<strong>{{ tags | length }}</strong>条标签</h5>
+                <ul class="posts">
+                    {% for tag in tags %}
+                        <li class="post">
+                            <div>&nbsp;&nbsp;
+                                <a href="{{ url_for('blog.post_list',tag=tag.name) }}">{{ tag.name }}</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if tags_pagination %}
+                    <div class="pagination">
+                        {{ macros.pagination_widget(tags_pagination,'blog.search',search_text=search_text) }}
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
+                {% endif %}
 
-        {% if categorys_pagination %}
-            <div class="pagination">
-                {{ macros.pagination_widget(categorys_pagination,'blog.search',search_text=search_text) }}
             </div>
-        {% endif %}
-
-        <h5>搜索到的用户</h5>
-        <ul class="posts">
-            {% for user in users %}
-                <li class="post">
-                    <div>&nbsp;&nbsp;
-                        <a href="{{ url_for('.user',username=user.username) }}">{{ user.username }}</a>
+            <div role="tabpanel" class="tab-pane" id="category">
+                <h5>搜索到<strong>{{ categorys | length }}</strong>分类</h5>
+                <ul class="posts">
+                    {% for category in categorys %}
+                        <li class="post">
+                            <div>&nbsp;&nbsp;
+                                <a href="{{ url_for('blog.post_list',category=category.name) }}">{{ category.name }}</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if categorys_pagination %}
+                    <div class="pagination">
+                        {{ macros.pagination_widget(categorys_pagination,'blog.search',search_text=search_text) }}
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
-        {% if users_pagination %}
-            <div class="pagination">
-                {{ macros.pagination_widget(users_pagination,'blog.search',search_text=search_text) }}
+                {% endif %}
+
             </div>
-        {% endif %}
+            <div role="tabpanel" class="tab-pane" id="user">
+                <h5>搜索到<strong>{{ users | length }}</strong>位用户</h5>
+                <ul class="posts">
+                    {% for user in users %}
+                        <li class="post">
+                            <div>&nbsp;&nbsp;
+                                <a href="{{ url_for('.user',username=user.username) }}">{{ user.username }}</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if users_pagination %}
+                    <div class="pagination">
+                        {{ macros.pagination_widget(users_pagination,'blog.search',search_text=search_text) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}
