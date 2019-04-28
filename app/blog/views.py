@@ -401,10 +401,7 @@ def search():
     search_text = request.args.get('search_text') or ''
     if search_text == '':
         flash('请输入搜索关键词，多个可用空格隔开')
-        next = request.args.get('next')
-        if next is None or not next.startswith('/'):
-            next = url_for('blog.index')
-        return redirect(next)
+        return redirect(request.args.get('next') or request.referrer or url_for('blog.index'))
     page = request.args.get('page', 1, type=int)
     posts_pagination = Post.query.whooshee_search(search_text).order_by(Post.create_time.desc()).paginate(page,
                                                                                                           per_page=
