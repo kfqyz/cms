@@ -48,7 +48,10 @@ def login():
                or User.query.filter_by(phone_number=form.account.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
-            return redirect(request.args.get(next) or request.referrer or url_for('blog.index'))
+            next = request.args.get('next')
+            if next is None or not next.startswith('/'):
+                next = url_for('blog.index')
+            return redirect(next)
         flash('输入的用户名或密码不正确！')
     return render_template('auth/login.html', form=form)
 
