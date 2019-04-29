@@ -35,9 +35,7 @@ def is_safe_url(target):
 
 # 重定向回上一个页面
 def redirect_back(default='blog.index', **kwargs):
-    for target in request.args.get('next'), request.referrer:
-        if not target:
-            continue
-        if is_safe_url(target):
-            return redirect(target)
+    target = request.args.get('next')
+    if target is not None and is_safe_url(target):
+        return redirect(target)
     return redirect(url_for(default, **kwargs))
